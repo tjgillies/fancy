@@ -1,0 +1,103 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+int vars[26];
+%}
+
+
+Start           =  Spacing Expression* Spacing {
+                      puts("got new programm running!");
+                   }
+
+Expression      = MethodDef
+                  | ClassMethodDef
+                  | MethodCall
+                  | Assignment
+                  | Literal
+                  | Subexpression
+
+Subexpression   = "(" WS* subexpr:Expression WS* ")"
+
+MethodDef       = Spacing "def" WS+ method_name:Identifier
+                  method_args:MethodArgs?
+                  method_body:Block
+
+ClassMethodDef = Spacing "def" WS+ class_name:Identifier WS+
+                 method_name:Identifier WS+ method_args:MethodArgs?
+                 method_body:Block
+
+MethodArgs      = ( ( arg_key:Identifier ":" WS+
+                      arg_name:Identifier )+ WS* )?
+
+MethodCall      = receiver:MessageReceiver WS+
+                  ( MessageWithParams | MessageNoParams )+
+
+MessageReceiver = ( Literal | Identifier ) | Subexpression
+
+MessageNoParams = message_name:Identifier
+MessageWithParams = ( message_key:Identifier ":" WS+ message_arg:Expression )+
+
+Assignment      = target:Identifier WS+ "=" WS+ value:Expression
+
+Literal         = StringLiteral
+                  | SymbolLiteral
+                  | DoubleLiteral
+                  | IntLiteral
+                  | CharLiteral
+                  | ArrayLiteral
+                  | HashLiteral
+                  | BlockLiteral
+                  | RegexLiteral
+
+StringLiteral   = "\"" string_val:StringChars "\""
+StringChars     = !"\"" .*
+
+SymbolLiteral   = ":" ( !":" symbol_name:Identifier )
+
+DoubleLiteral   = Sign? Digit+ "." Digit+
+
+IntLiteral      = Sign? NonZeroDigit Digit+
+
+CharLiteral     = "?" char:Character
+
+ArrayLiteral    = "[" WS* first_item:Expression? WS* 
+                          ( "," WS* item:Expression )* 
+                      WS*
+                  "]"
+
+HashLiteral     = "<[" WS* first_entry:HashEntry WS*
+                          ( "," WS* pair:HashEntry )*
+                       WS*
+                  "]>"
+HashEntry       = key:Expression WS* "=>" value:Expression
+
+BlockLiteral    = BlockParams? WS* Block
+
+RegexLiteral    = "/" (!"/" .)* "/"
+
+Block           = LCurly Expression* RCurly
+BlockParams     = "|" WS* arg:Identifier ( WS* "," WS* arg:Identifier )* WS* "|"
+
+Character       = [a-zA-Z0-9_]
+Sign            = ( "+" | "-" )
+Digit           = [0-9]
+NonZeroDigit    = [1-9]
+Identifier      = [a-zA-Z]+ [a-zA-Z0-9_]* ("?" | "!" | "=")?
+LCurly          = "{"
+RCurly          = "}"
+Spacing         =  ( WS | Comment )*
+Comment         = '#' ( !EOL . )* EOL
+WS              = ' ' | '\t' | EOL
+EOL             = '\r\n' | '\n' | '\r'
+EOF             = !.
+
+%%
+int main(int argc, char **argv) {
+  if ((argc > 1) && (freopen(argv[1], "r", stdin) == NULL))
+  {
+    fprintf(stderr, "%s: File %s cannot be opened.\n", argv[0], argv[1]);
+    exit(1);
+  }
+  yyparse();
+  return 0;      
+}
