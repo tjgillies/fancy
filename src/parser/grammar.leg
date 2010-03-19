@@ -16,28 +16,46 @@ Expression      = MethodDef
                   | Literal
                   | Subexpression
 
-Subexpression   = "(" WS* subexpr:Expression WS* ")"
+Subexpression   = ( "(" WS* subexpr:Expression WS* ")" ) {
+                    puts("Subexpression");
+                  }
 
-MethodDef       = Spacing "def" WS+ method_name:Identifier
+MethodDef       = ( Spacing "def" WS+ method_name:Identifier )
                   method_args:MethodArgs?
-                  method_body:Block
+                  method_body:Block {
+                    puts("MethodDef");
+                  }
 
-ClassMethodDef = Spacing "def" WS+ class_name:Identifier WS+
+ClassMethodDef = ( Spacing "def" WS+ class_name:Identifier WS+ )
                  method_name:Identifier WS+ method_args:MethodArgs?
-                 method_body:Block
+                 method_body:Block {
+                    puts("ClassMethodDef");
+                 }
 
 MethodArgs      = ( ( arg_key:Identifier ":" WS+
-                      arg_name:Identifier )+ WS* )?
+                      arg_name:Identifier )+ WS* )? {
+                    puts("MethodArgs");
+                 }
 
-MethodCall      = receiver:MessageReceiver WS+
-                  ( MessageWithParams | MessageNoParams )+
+MethodCall      = ( receiver:MessageReceiver WS+
+                  ( MessageWithParams | MessageNoParams )+ ) {
+                    puts("MethodCall");
+                 }
 
-MessageReceiver = ( Literal | Identifier ) | Subexpression
+MessageReceiver = ( ( Literal | Identifier ) | Subexpression ) {
+                    puts("MessageReceiver");
+                 }
 
-MessageNoParams = message_name:Identifier
-MessageWithParams = ( message_key:Identifier ":" WS+ message_arg:Expression )+
+MessageNoParams = message_name:Identifier {
+                    puts("MessageNoParams");
+                 }
+MessageWithParams = ( message_key:Identifier ":" WS+ message_arg:Expression )+  {
+                    puts("MessageWithParams");
+                 }
 
-Assignment      = target:Identifier WS+ "=" WS+ value:Expression
+Assignment      = ( target:Identifier WS+ "=" WS+ value:Expression ) {
+                    puts("Assignment");
+                 }
 
 Literal         = StringLiteral
                   | SymbolLiteral
@@ -49,31 +67,50 @@ Literal         = StringLiteral
                   | BlockLiteral
                   | RegexLiteral
 
-StringLiteral   = "\"" string_val:StringChars "\""
+StringLiteral   = ( "\"" string_val:StringChars "\"" ) {
+                    puts("StringLiteral");
+                 }
 StringChars     = !"\"" .*
 
-SymbolLiteral   = ":" ( !":" symbol_name:Identifier )
+SymbolLiteral   = ( ":" ( !":" symbol_name:Identifier ) ) {
+                    puts("SymbolLiteral");
+                 }
 
-DoubleLiteral   = Sign? Digit+ "." Digit+
+DoubleLiteral   = ( Sign? Digit+ "." Digit+ ) {
+                    puts("DoubleLiteral");
+                 }
 
-IntLiteral      = Sign? NonZeroDigit Digit+
+IntLiteral      = ( Sign? NonZeroDigit Digit+ ) {
+                    puts("IntLiteral");
+                 }
 
-CharLiteral     = "?" char:Character
+CharLiteral     = ( "?" char:Character ) {
+                    puts("CharLiteral");
+                 }
 
-ArrayLiteral    = "[" WS* first_item:Expression? WS* 
+ArrayLiteral    = ( "[" WS* first_item:Expression? WS* 
                           ( "," WS* item:Expression )* 
                       WS*
-                  "]"
+                  "]" ) {
+                    puts("ArrayLiteral");
+                 }
 
-HashLiteral     = "<[" WS* first_entry:HashEntry WS*
+HashLiteral     = ( "<[" WS* first_entry:HashEntry WS*
                           ( "," WS* pair:HashEntry )*
                        WS*
-                  "]>"
+                  "]>" ) {
+                    puts("HashLiteral");
+                 }
+
 HashEntry       = key:Expression WS* "=>" value:Expression
 
-BlockLiteral    = BlockParams? WS* Block
+BlockLiteral    = ( BlockParams? WS* Block ) {
+                    puts("BlockLiteral");
+                 }
 
-RegexLiteral    = "/" (!"/" .)* "/"
+RegexLiteral    = ( "/" (!"/" .)* "/" ) {
+                    puts("RegexLiteral");
+                 }
 
 Block           = LCurly Expression* RCurly
 BlockParams     = "|" WS* arg:Identifier ( WS* "," WS* arg:Identifier )* WS* "|"
