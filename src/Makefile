@@ -13,9 +13,9 @@ console array file directory scope hash exception method system encoding
 
 files = fancy_object true nil hash array symbol number string		\
 native_method scope lexical_scope class errors method regexp block	\
-utils file directory fancy_exception encoding \
-encodings/encoding_utf8 encodings/encoding_utf16 encodings/encoding_utf32 \
-encodings/encoding_one_byte_codings
+utils file directory fancy_exception encoding encodings/encoding_utf8	\
+# encodings/encoding_utf16 encodings/encoding_utf32			\
+# encodings/encoding_one_byte_codings
 
 src_files = $(foreach file, $(files), $(file).cc) 			\
 $(foreach file, $(bootstrap_files), bootstrap/$(file).cc) 		\

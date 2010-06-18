@@ -4,6 +4,8 @@
 #include "bootstrap/core_classes.h"
 
 #include <iostream>
+#include <cstdlib>
+#include <cstring>
 
 namespace fancy {
 
