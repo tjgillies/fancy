@@ -2,6 +2,7 @@
 #include <cstdio>
 
 #include "parser.h"
+#include "../string.h"
 #include "../fancy_exception.h"
 #include "../utils.h"
 #include "../bootstrap/core_classes.h"
@@ -37,7 +38,7 @@ namespace fancy {
           yyparse();
         } catch(FancyException* ex) {
           errorln("GOT UNCAUGHT EXCEPTION, ABORTING.");
-          errorln(ex->to_s());
+          errorln((const char*)ex->to_s().value());
           exit(1);
         }
 

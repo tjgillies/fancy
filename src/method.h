@@ -52,7 +52,7 @@ namespace fancy {
      * See FancyObject for these methods.
      */
     virtual EXP_TYPE type() const;
-    virtual string to_s() const;
+    virtual const FancyString to_s() const;
 
     /**
      * Inherited from Callable. Calls the method.

@@ -1,4 +1,5 @@
 #include "true.h"
+#include "string.h"
 #include "bootstrap/core_classes.h"
 
 namespace fancy {
@@ -24,9 +25,9 @@ namespace fancy {
     return EXP_TRUE;
   }
 
-  string True::to_s() const
+  const FancyString True::to_s() const
   {
-    return "true";
+    return FancyString("true");
   }
 
 }

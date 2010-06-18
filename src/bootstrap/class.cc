@@ -1,5 +1,6 @@
 #include "includes.h"
 
+#include "../string.h"
 #include "../block.h"
 
 namespace fancy {
@@ -50,7 +51,7 @@ second argument to serve as the method's body.",
       FancyObject* arg2 = args[1];
       if(Block* method_block = dynamic_cast<Block*>(arg2)) {
         method_block->override_self(true);
-        dynamic_cast<Class*>(self)->def_method(arg1->to_s(), method_block);
+        dynamic_cast<Class*>(self)->def_method(string((const char *)(arg1->to_s().value())), method_block);
         return t;
       } else {
         errorln("Class#define_method:with: expects String and Block arguments.");
@@ -65,7 +66,7 @@ second argument to serve as the method's body.",
       FancyObject* arg2 = args[1];
 
       if(IS_BLOCK(arg2)) {
-        dynamic_cast<Class*>(self)->def_class_method(arg1->to_s(),
+        dynamic_cast<Class*>(self)->def_class_method(string((const char *)(arg1->to_s().value())),
                                                       dynamic_cast<Block*>(arg2));
         return t;
       } else {
@@ -92,10 +93,10 @@ second argument to serve as the method's body.",
       EXPECT_ARGS("Class#method:", 1);
 
       if(Class* the_klass = dynamic_cast<Class*>(self)) {
-        if(Method* meth = dynamic_cast<Method*>(the_klass->find_method(args[0]->to_s()))) {
+        if(Method* meth = dynamic_cast<Method*>(the_klass->find_method((const char *)(args[0]->to_s().value())))) {
           return meth;
         }
-        if(NativeMethod* native_meth = dynamic_cast<NativeMethod*>(the_klass->find_method(args[0]->to_s()))) {
+        if(NativeMethod* native_meth = dynamic_cast<NativeMethod*>(the_klass->find_method((const char *)(args[0]->to_s().value())))) {
           return native_meth;
         }
       }

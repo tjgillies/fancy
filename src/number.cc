@@ -1,6 +1,7 @@
 #include <sstream>
 
 #include "number.h"
+#include "string.h"
 #include "bootstrap/core_classes.h"
 
 namespace fancy {
@@ -36,11 +37,11 @@ namespace fancy {
     }
   }
 
-  string Number::to_s() const
+  const FancyString Number::to_s() const
   {
     stringstream s;
     s << (is_double() ? _doubleval : _intval);
-    return s.str();
+    return FancyString(s.str());
   }
 
   bool Number::is_double() const

@@ -34,6 +34,8 @@ namespace fancy {
 
   Class* SystemClass;
 
+  Class* EncodingClass;
+
   /**
    * Global Singleton Objects
    */
@@ -77,6 +79,8 @@ namespace fancy {
 
       SystemClass = new Class("System", ObjectClass);
 
+      EncodingClass = new Class("Encoding",ObjectClass);
+
       init_object_class();
       init_class_class();
       init_block_class();
@@ -91,6 +95,7 @@ namespace fancy {
       init_exception_classes();
       init_method_class();
       init_system_class();
+      init_encoding_class();
     }
 
     void init_global_objects()
@@ -132,6 +137,7 @@ namespace fancy {
       global_scope->define("DivisionByZeroError", DivisionByZeroErrorClass);
 
       global_scope->define("System", SystemClass);
+      global_scope->define("Encoding", EncodingClass);
   
       /* define singleton objects */
       global_scope->define("nil", nil);

@@ -31,6 +31,8 @@ namespace fancy {
 
   extern Class* SystemClass;
 
+  extern Class* EncodingClass;
+
   extern FancyObject* nil;
   extern FancyObject* t;
 
@@ -69,6 +71,7 @@ namespace fancy {
     void init_scope_class();
     void init_string_class();
     void init_system_class();
+    void init_encoding_class();
   }
 }
 

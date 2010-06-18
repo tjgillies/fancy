@@ -1,4 +1,5 @@
 #include "regexp.h"
+#include "string.h"
 #include "bootstrap/core_classes.h"
 
 namespace fancy {
@@ -27,9 +28,9 @@ namespace fancy {
     return EXP_REGEX;
   }
 
-  string Regexp::to_s() const
+  const FancyString Regexp::to_s() const
   {
-    return "r{" + _pattern + "}";
+    return FancyString("r{" + _pattern + "}");
   }
 
   string Regexp::pattern() const

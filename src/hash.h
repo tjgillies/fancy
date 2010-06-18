@@ -47,7 +47,7 @@ namespace fancy {
      * See FancyObject for these methods.
      */
     virtual EXP_TYPE type() const;
-    virtual string to_s() const;
+    virtual const FancyString to_s() const;
 
     /**
      * Returns a C++ vector of all the keys in the Hash.

@@ -1,5 +1,6 @@
 #include <sstream>
 #include "array.h"
+#include "string.h"
 #include "bootstrap/core_classes.h"
 
 namespace fancy {
@@ -146,32 +147,32 @@ namespace fancy {
     return EXP_ARRAY;
   }
 
-  string Array::to_s() const
+  const FancyString Array::to_s() const
   {
     stringstream s;
     s << "[";
     for(unsigned int i = 0; i < _values.size(); i++) {
-      s << _values[i]->to_s();
+      s << (const char *)(_values[i]->to_s().value());
       if(i != (_values.size() - 1)) {
         s << ", ";
       }
     }
     s << "]";
-    return s.str();
+    return FancyString(s.str());
   }
 
-  string Array::inspect() const
+  const FancyString Array::inspect() const
   {
     stringstream s;
     s << "[";
     for(unsigned int i = 0; i < _values.size(); i++) {
-      s << _values[i]->inspect();
+      s << (const char *)(_values[i]->inspect().value());
       if(i != (_values.size() - 1)) {
         s << ", ";
       }
     }
     s << "]";
-    return s.str();
+    return FancyString(s.str());
   }
 
   unsigned int Array::size() const

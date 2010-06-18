@@ -32,7 +32,7 @@ namespace fancy {
     CLASSMETHOD(ConsoleClass, print)
     {
       EXPECT_ARGS("Console##print:", 1);
-      cout << args[0]->send_message("to_s", 0, 0, scope, self)->to_s();
+      cout << args[0]->send_message("to_s", 0, 0, scope, self)->to_s().value();
       return nil;
     }
 

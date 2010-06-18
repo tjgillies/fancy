@@ -1,4 +1,5 @@
 #include "nil.h"
+#include "string.h"
 #include "bootstrap/core_classes.h"
 
 namespace fancy {
@@ -24,9 +25,9 @@ namespace fancy {
     return EXP_NIL;
   }
 
-  string Nil::to_s() const
+  const FancyString Nil::to_s() const
   {
-    return "nil";
+    return FancyString("nil");
   }
 
 }

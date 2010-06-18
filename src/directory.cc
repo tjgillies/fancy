@@ -1,3 +1,4 @@
+#include "string.h"
 #include "directory.h"
 #include "bootstrap/core_classes.h"
 
@@ -28,9 +29,9 @@ namespace fancy {
     return EXP_DIRECTORY;
   }
 
-  string Directory::to_s() const
+  const FancyString Directory::to_s() const
   {
-    return "<Directory:" + _dirname + ">";
+    return FancyString("<Directory:" + _dirname + ">");
   }
 
   string Directory::dirname() const

@@ -11,7 +11,7 @@ namespace fancy {
       RequireStatement::RequireStatement(FancyString* filename)
       {
         assert(filename);
-        _filename = filename->value();
+        _filename = (const char*)filename->value();
       }
 
       RequireStatement::~RequireStatement()

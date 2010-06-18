@@ -33,7 +33,7 @@ namespace fancy {
      */  
     virtual FancyObject* equal(FancyObject* other) const;
     virtual EXP_TYPE type() const;
-    virtual string to_s() const;
+    virtual const FancyString to_s() const;
 
     /**
      * Indicates, if Number is double.

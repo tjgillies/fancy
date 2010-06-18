@@ -61,7 +61,7 @@ void exec_from_stdin()
     yyparse();
   } catch(FancyException *ex) {
     errorln("GOT UNCAUGHT EXCEPTION, ABORTING.");
-    errorln(ex->to_s());
+    errorln(string((const char *)(ex->to_s().value())));
     // keep it running!
     exec_from_stdin();
   }

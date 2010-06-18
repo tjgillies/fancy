@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "fancy_exception.h"
+#include "string.h"
 #include "bootstrap/core_classes.h"
 
 namespace fancy {
@@ -47,9 +48,9 @@ namespace fancy {
     return EXP_EXCEPTION;
   }
 
-  string FancyException::to_s() const
+  const FancyString FancyException::to_s() const
   {
-    return exception_class()->to_s() + ": " + message();
+    return FancyString(string((const char *)(exception_class()->to_s().value())) + ": " + message());
   }
 
   string FancyException::message() const

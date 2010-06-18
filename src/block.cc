@@ -1,4 +1,5 @@
 #include "block.h"
+#include "string.h"
 #include "symbol.h"
 #include "bootstrap/core_classes.h"
 
@@ -36,9 +37,9 @@ namespace fancy {
     return EXP_BLOCK;
   }
 
-  string Block::to_s() const
+  const FancyString Block::to_s() const
   {
-    return "<Block>";
+    return FancyString("<Block>");
   }
 
   FancyObject* Block::call(FancyObject* self, FancyObject* *args, int argc, Scope *scope)

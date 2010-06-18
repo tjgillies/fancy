@@ -6,6 +6,8 @@
 
 namespace fancy {
 
+  class FancyEncoding;
+
   /**
    * String class representing String objects within Fancy.
    */
@@ -17,28 +19,34 @@ namespace fancy {
      * @param value C++ string containing the actual string.
      */
     FancyString(const string &value);
+    FancyString(const unsigned char* value);
+    FancyString(const unsigned char value);
+    FancyString(const FancyString &str);
     ~FancyString();
+
+    static unsigned char *normalize(const unsigned char *chr,size_t *bytes);
 
     /**
      * See FancyObject for these methods.
      */
     virtual FancyObject* equal(FancyObject* other) const;
     virtual EXP_TYPE type() const;
-    virtual string to_s() const;
-    virtual string inspect() const;
+    virtual const FancyString to_s() const;
+    virtual const FancyString inspect() const;
 
     /**
-     * Returns the C++ string value.
-     * @return The C++ string value.
+     * Returns the C string value.
+     * @return The C string value.
      */
-    string value() const;
+    const unsigned char *value() const;
 
     /**
-     * Replaces all occurences of what in the FancyString with with.
-     * @param what FancyString to find and replace.
-     * @param with FancyString to replace all occurrances of what with.
+     * Returns the encoding of the string
+     * @return The encoding of the string
      */
-    void replace(string &what, string &with);
+    const FancyEncoding *encoding() const;
+
+    size_t bytes() const;
 
     /**
      * Returns a FancyString object with a given C++ string value.
@@ -48,12 +56,15 @@ namespace fancy {
      * @param value C++ string value.
      * @return A FancyString object with a given C++ string value.
      */
+    static FancyString* from_value(const unsigned char *value);
     static FancyString* from_value(const string &value);
 
   private:
-    string _value;
+    size_t _bytes;
+    unsigned char *_value;
+    FancyEncoding *_encoding;
 
-    static map<string, FancyString*> value_cache;
+    //static map<string, FancyString*> value_cache;
   };
 
 }

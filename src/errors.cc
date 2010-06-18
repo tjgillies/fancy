@@ -1,3 +1,4 @@
+#include "string.h"
 #include "errors.h"
 #include "array.h"
 #include "bootstrap/core_classes.h"
@@ -59,7 +60,7 @@ namespace fancy {
   }
 
   IOError::IOError(const string &message, const string &filename, Array* modes) :
-    FancyException(message + "\"" + filename + "\"" + " with modes: " + modes->inspect(),
+    FancyException(message + "\"" + filename + "\"" + " with modes: " + (const char *)modes->inspect().value(),
                    IOErrorClass),
     _filename(filename),
     _modes(modes)

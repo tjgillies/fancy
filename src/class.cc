@@ -1,6 +1,7 @@
 #include <cassert>
 #include <vector>
 
+#include "string.h"
 #include "class.h"
 #include "array.h"
 #include "block.h"
@@ -141,9 +142,9 @@ namespace fancy {
     return EXP_CLASS;
   }
 
-  string Class::to_s() const
+  const FancyString Class::to_s() const
   {
-    return _name;
+    return FancyString(_name);
   }
 
   Callable* Class::find_method(const string &name)

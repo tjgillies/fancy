@@ -218,12 +218,12 @@ and passing them on to the initialize: method of the class.",
 
     METHOD(ObjectClass, to_s)
     {
-      return FancyString::from_value(self->to_s());
+      return FancyString::from_value(self->to_s().value());
     }
 
     METHOD(ObjectClass, inspect)
     {
-      return FancyString::from_value(self->inspect() + " : " + self->get_class()->name());
+      return FancyString::from_value(string((const char *)(self->inspect().value())) + " : " + self->get_class()->name());
     }
 
     METHOD(ObjectClass, class)
@@ -238,7 +238,7 @@ and passing them on to the initialize: method of the class.",
       FancyObject* arg2 = args[1];
 
       if(IS_STRING(arg1) && IS_BLOCK(arg2)) {
-        self->def_singleton_method(dynamic_cast<FancyString*>(arg1)->value(), dynamic_cast<Block*>(arg2));
+        self->def_singleton_method(string((const char *)(dynamic_cast<FancyString*>(arg1)->value())), dynamic_cast<Block*>(arg2));
         return t;
       } else {
         errorln("Object#define_singleton_method:with: expects String and Block arguments.");
@@ -272,14 +272,14 @@ and passing them on to the initialize: method of the class.",
     METHOD(ObjectClass, send)
     {
       EXPECT_ARGS("Object#send:", 1);
-      string method_name = args[0]->to_s();
+      string method_name = (const char *)(args[0]->to_s().value());
       return self->send_message(method_name, 0, 0, scope, self);
     }
 
     METHOD(ObjectClass, send__params)
     {
       EXPECT_ARGS("Object#send:params:", 2);
-      string method_name = args[0]->to_s();
+      string method_name = (const char *)(args[0]->to_s().value());
       if(Array* arr = dynamic_cast<Array*>(args[1])) {
         int size = arr->size();
         FancyObject* *arg_array = new FancyObject*[size];
@@ -298,7 +298,7 @@ and passing them on to the initialize: method of the class.",
     METHOD(ObjectClass, responds_to)
     {
       EXPECT_ARGS("Object#responds_to?:", 1);
-      string method_name = args[0]->to_s();
+      string method_name = (const char *)(args[0]->to_s().value());
       if(self->responds_to(method_name)) {
         return t;
       }
@@ -308,7 +308,7 @@ and passing them on to the initialize: method of the class.",
     METHOD(ObjectClass, get_slot)
     {
       EXPECT_ARGS("Object#get_slot:", 1);
-      string slot_name = "@" + args[0]->to_s();
+      string slot_name = "@" + string((const char *)(args[0]->to_s().value()));
       FancyObject* slot = self->get_slot(slot_name);
       return slot;
     }
@@ -316,7 +316,7 @@ and passing them on to the initialize: method of the class.",
     METHOD(ObjectClass, set_slot__value)
     {
       EXPECT_ARGS("Object#set_slot:value:", 2);
-      string slot_name = "@" + args[0]->to_s();
+      string slot_name = "@" + string((const char *)(args[0]->to_s().value()));
       FancyObject* value = args[1];
       self->set_slot(slot_name, value);
       return self;
@@ -325,7 +325,7 @@ and passing them on to the initialize: method of the class.",
     METHOD(ObjectClass, docstring_set)
     {
       EXPECT_ARGS("Object#docstring:", 1);
-      self->set_docstring(args[0]->to_s());
+      self->set_docstring(string((const char *)(args[0]->to_s().value())));
       return t;
     }
 

@@ -1,6 +1,7 @@
 #include <sstream>
 
 #include "hash.h"
+#include "string.h"
 #include "bootstrap/core_classes.h"
 
 namespace fancy {
@@ -40,20 +41,20 @@ namespace fancy {
     return EXP_HASH;
   }
 
-  string Hash::to_s() const
+  const FancyString Hash::to_s() const
   {
     stringstream s;
     s << "<[ ";
 
     for(map<FancyObject*, FancyObject*>::const_iterator iter = _mappings.begin(); iter != _mappings.end(); iter++) {
-      s << iter->first->to_s();
+      s << (const char *)iter->first->to_s().value();
       s << " => ";
-      s << iter->second->to_s();
+      s << (const char *)iter->second->to_s().value();
       s << " ";
     }
 
     s << "]>";
-    return s.str();
+    return FancyString(s.str());
   }
 
   vector<FancyObject*> Hash::keys()

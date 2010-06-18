@@ -15,6 +15,7 @@ namespace fancy {
   class Method;
   class Array;
   class Scope;
+  class FancyString;
 
   typedef map<string, FancyObject*> object_map;
   typedef map<string, Callable*> method_map;
@@ -78,14 +79,14 @@ namespace fancy {
      * purposes).
      * @return C++ string representation of the object.
      */
-    virtual string to_s() const;
+    virtual const FancyString to_s() const;
 
     /**
      * Returns a C++ string representation with additional information
      * (e.g. Class of the object).
      * @return C++ stirng representation with additional information.
      */
-    virtual string inspect() const;
+    virtual const FancyString inspect() const;
 
     /**
      * Calls a method with arguments in a given scope.

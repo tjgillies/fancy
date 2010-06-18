@@ -1,4 +1,5 @@
 #include "file.h"
+#include "string.h"
 #include "array.h"
 #include "symbol.h"
 #include "bootstrap/core_classes.h"
@@ -33,9 +34,9 @@ namespace fancy {
     return EXP_FILE;
   }
 
-  string File::to_s() const
+  const FancyString File::to_s() const
   {
-    return "<File:" + _filename + ">";; // + " [" + _mode + "]>";
+    return FancyString("<File:" + _filename + ">"); // + " [" + _mode + "]>";
   }
 
   string File::filename() const

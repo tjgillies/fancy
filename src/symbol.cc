@@ -1,5 +1,6 @@
 #include <string>
 
+#include "string.h"
 #include "symbol.h"
 #include "bootstrap/core_classes.h"
 
@@ -34,14 +35,14 @@ namespace fancy {
     return EXP_SYMBOL;
   }
 
-  string Symbol::to_s() const
+  const FancyString Symbol::to_s() const
   {
-    return _name.substr(1, _name.size() - 1);
+    return FancyString(_name.substr(1, _name.size() - 1));
   }
 
-  string Symbol::inspect() const
+  const FancyString Symbol::inspect() const
   {
-    return _name;
+    return FancyString(_name);
   }
 
   string Symbol::name() const

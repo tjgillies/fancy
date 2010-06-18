@@ -1,5 +1,6 @@
 #include <sstream>
 
+#include "string.h"
 #include "method.h"
 #include "utils.h"
 #include "bootstrap/core_classes.h"
@@ -108,9 +109,9 @@ namespace fancy {
     return EXP_METHOD;
   }
 
-  string Method::to_s() const
+  const FancyString Method::to_s() const
   {
-    return "<Method : '" + _method_ident + "' Doc:'" + _docstring + "'>";
+    return FancyString("<Method : '" + _method_ident + "' Doc:'" + _docstring + "'>");
   }
 
   void Method::init_method_ident()

@@ -1,5 +1,6 @@
 #include "includes.h"
 
+#include "../string.h"
 #include "../file.h"
 #include "../array.h"
 #include "../block.h"
@@ -107,7 +108,7 @@ Raises an IOError if any File to be deleted does not exist.",
         return nil;
       }
   
-      string filename = dynamic_cast<FancyString*>(arg1)->value();
+      string filename = (const char *)dynamic_cast<FancyString*>(arg1)->value();
       Array* modes = dynamic_cast<Array*>(arg2);
       Block* block = dynamic_cast<Block*>(arg3);  
       File* file = new File(filename, modes); 
@@ -142,7 +143,7 @@ Raises an IOError if any File to be deleted does not exist.",
         return nil;
       }
 
-      string filename = dynamic_cast<FancyString*>(arg1)->value();
+      string filename = (const char *)dynamic_cast<FancyString*>(arg1)->value();
       Array* modes = dynamic_cast<Array*>(arg2);
       // FILE *f = fopen(filename.c_str(), mode.c_str());
       File* file = new File(filename, modes);
@@ -168,15 +169,15 @@ Raises an IOError if any File to be deleted does not exist.",
 
       // single filename
       if(FancyString* filename = dynamic_cast<FancyString*>(arg)) {
-        if(remove(filename->value().c_str()) == 0) {
+        if(remove((const char *)filename->value()) == 0) {
           return t;
         } else {
-          throw new IOError(string("Could not delete file: "), filename->value());
+          throw new IOError(string("Could not delete file: "), string((const char *)filename->value()));
         }
       } else if(Array* filenames = dynamic_cast<Array*>(arg)) {
         // Array of filenames
         for(unsigned int i = 0; i < filenames->size(); i++) {
-          string filename = filenames->at(i)->to_s();
+          string filename = (const char *)filenames->at(i)->to_s().value();
           if(remove(filename.c_str()) == 0) {
             return t;
           } else {
@@ -190,8 +191,8 @@ Raises an IOError if any File to be deleted does not exist.",
     CLASSMETHOD(FileClass, rename__to)
     {
       EXPECT_ARGS("File##rename:to:", 2);
-      string oldname = args[0]->to_s();
-      string newname = args[1]->to_s();
+      string oldname = (const char *)args[0]->to_s().value();
+      string newname = (const char *)args[1]->to_s().value();
       if(rename(oldname.c_str(), newname.c_str()) == 0) {
         return t;
       } else {
@@ -202,7 +203,7 @@ Raises an IOError if any File to be deleted does not exist.",
     CLASSMETHOD(FileClass, is_directory)
     {
       EXPECT_ARGS("File##directory?:", 1);
-      string filename = args[0]->to_s();
+      string filename = (const char *)args[0]->to_s().value();
       // check the status of the filename
       struct stat st_buf;
       if(stat(filename.c_str(), &st_buf) == 0) {
@@ -224,7 +225,7 @@ Raises an IOError if any File to be deleted does not exist.",
       if(file) {
         // fprintf(file->file(), "%s", args.front()->to_s().c_str())
         // fstream fs = file->file();
-        file->file() << args[0]->to_s();
+        file->file() << args[0]->to_s().value();
         file->file().flush();
       }
       return self;

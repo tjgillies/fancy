@@ -40,7 +40,7 @@ namespace fancy {
     CLASSMETHOD(SystemClass, do)
     {
       EXPECT_ARGS("System##do:", 1);
-      system(args[0]->to_s().c_str());
+      system((const char *)args[0]->to_s().value());
       return nil;
     }
 
@@ -49,7 +49,7 @@ namespace fancy {
       // TODO: implement this using Files instead of returning an Array
 
       EXPECT_ARGS("System##pipe:", 1);
-      FILE *f = popen(args[0]->to_s().c_str(), "r");
+      FILE *f = popen((const char *)args[0]->to_s().value(), "r");
       vector<FancyObject*> lines;
       while(!feof(f)) {
         stringstream line;

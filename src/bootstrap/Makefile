@@ -2,7 +2,7 @@ cc = g++
 cc_flags = -g -Wall -ansi -pedantic
 
 files = core_classes object class block string number console array	\
-file directory scope hash exception method system
+file directory scope hash exception method system encoding
 
 src_files = $(foreach file, $(files), $(file).cc)
 obj_files = $(foreach file, $(files), $(file).o)
@@ -55,6 +55,9 @@ method.o: method.cc
 
 system.o: system.cc
 	$(cc) $(cc_flags) -c system.cc -o system.o
+
+encoding.o: encoding.cc
+	$(cc) $(cc_flags) -c encoding.cc -o encoding.o
 
 subdirs:
 	$(foreach dir, $(sub_dirs), cd $(dir) && make && cd ..;)

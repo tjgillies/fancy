@@ -70,7 +70,7 @@ namespace fancy {
     CLASSMETHOD(ExceptionClass, new)
     {
       EXPECT_ARGS("Exception##new:", 1);
-      string message = args[0]->to_s();
+      string message = (const char *)args[0]->to_s().value();
       return new FancyException(message);
     }
 
@@ -85,7 +85,7 @@ namespace fancy {
         throw except;
       } else {
         cout << "DIDNT raise!" <<endl;
-        cout << "except is: " << self->to_s() << endl;
+        cout << "except is: " << (const char *)self->to_s().value() << endl;
         return nil;
       }
     }
@@ -152,7 +152,7 @@ namespace fancy {
     CLASSMETHOD(IOErrorClass, message__filename)
     {
       EXPECT_ARGS("IOError##message:filename::", 2);      
-      return new IOError(args[0]->to_s(), args[1]->to_s());
+      return new IOError(string((const char *)args[0]->to_s().value()), string((const char *)args[1]->to_s().value()));
     }
 
   }

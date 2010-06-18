@@ -3,7 +3,7 @@ GCLIB = vendor/gc/.libs/libgccpp.a
 all: fancy
 
 fancy: ${GCLIB}
-	cd src && make -j 4; make
+	cd src && make
 
 gc: ${GCLIB}
 

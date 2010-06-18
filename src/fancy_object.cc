@@ -81,12 +81,12 @@ namespace fancy {
     return EXP_CLASSINSTANCE;
   }
 
-  string FancyObject::to_s() const
+  const FancyString FancyObject::to_s() const
   {
-    return "<Unkown FancyObject>";
+    return FancyString("<Unkown FancyObject>");
   }
 
-  string FancyObject::inspect() const
+  const FancyString FancyObject::inspect() const
   {
     return to_s();
   }
@@ -164,7 +164,7 @@ namespace fancy {
       }
     } else {
       // TODO: create a UndefinedSuperClass exception class or so...
-      error("No superclass defined for: ") << _class->to_s() << endl;
+      error("No superclass defined for: ") << (const char *)(_class->to_s().value()) << endl;
       return nil;
     }
   }

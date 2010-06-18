@@ -126,8 +126,8 @@ namespace fancy {
     Array* last(int n) const;
 
     virtual EXP_TYPE type() const;
-    virtual string to_s() const;
-    virtual string inspect() const;
+    virtual const FancyString to_s() const;
+    virtual const FancyString inspect() const;
   
     /**
      * Returns size of Array.

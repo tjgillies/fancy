@@ -3,6 +3,8 @@
 // used for parse_string() in String#eval
 #include "../parser/parser.h"
 
+#include "../encodings/encodings.h"
+
 #include "../string.h"
 #include "../number.h"
 #include "../block.h"
@@ -16,6 +18,11 @@ namespace fancy {
                       "new",
                       "String constructor.",
                       new);
+
+      DEF_METHOD(StringClass,
+                  "encoding",
+                  "Returns the encoding of the string.",
+                  encoding);
 
       DEF_METHOD(StringClass,
                  "downcase",
@@ -48,6 +55,11 @@ namespace fancy {
                  each);
 
       DEF_METHOD(StringClass,
+                 "each_byte:",
+                 "Calls the given Block with each byte in self",
+                 each_byte);
+
+      DEF_METHOD(StringClass,
                  "at:",
                  "Returns the character at the given index.",
                  at);
@@ -70,38 +82,45 @@ namespace fancy {
      * String instance methods
      */
 
+    METHOD(StringClass, encoding)
+    {
+      FancyString *str = dynamic_cast<FancyString*>(self);
+      return (FancyObject *)str->encoding();
+    }
+
     METHOD(StringClass, downcase)
     {
-      string str = dynamic_cast<FancyString*>(self)->value();
-      std::transform(str.begin(), str.end(), str.begin(), ::tolower);
-      return FancyString::from_value(str);
+      FancyString* str = dynamic_cast<FancyString*>(self);
+      FancyString* nstr = str->encoding()->downcase(str);
+      return nstr;
     }
 
     METHOD(StringClass, upcase)
     {
-      string str = dynamic_cast<FancyString*>(self)->value();
-      std::transform(str.begin(), str.end(), str.begin(), ::toupper);
-      return FancyString::from_value(str);
+      FancyString* str = dynamic_cast<FancyString*>(self);
+      FancyString* nstr = str->encoding()->upcase(str);
+      return nstr;
     }
 
     METHOD(StringClass, from__to)
     {
       EXPECT_ARGS("String#from:to:", 2);
-      string str = dynamic_cast<FancyString*>(self)->value();
+      FancyString *str = dynamic_cast<FancyString*>(self);
       FancyObject* arg1 = args[0];
       FancyObject* arg2 = args[1];
   
       if(IS_INT(arg1) && IS_INT(arg2)) {
         Number* idx1 = dynamic_cast<Number*>(arg1);
         Number* idx2 = dynamic_cast<Number*>(arg2);
-        string substr;
+        FancyString *substr;
+
         // deal with negative indexes
         if(idx2->intval() < 0) {
-          substr = str.substr(idx1->intval(), (str.length() + 1) + idx2->intval());
+          substr = str->encoding()->substr(str,idx1->intval(), (str->encoding()->strlen(str) + 1) + idx2->intval());
         } else {
-          substr = str.substr(idx1->intval(), (idx2->intval() + 1) - idx1->intval());
+          substr = str->encoding()->substr(str,idx1->intval(), (idx2->intval() + 1) - idx1->intval());
         }
-        return FancyString::from_value(substr);
+        return substr;
       } else {
         errorln("String#to:from: expects 2 Integer arguments");
         return self;
@@ -115,9 +134,9 @@ namespace fancy {
       EXPECT_ARGS("String#eq:", 1);
       FancyObject* arg = args[0];
       if(IS_STRING(arg)) {
-        string str1 = dynamic_cast<FancyString*>(self)->value();
-        string str2 = dynamic_cast<FancyString*>(arg)->value();
-        if(str1 == str2) {
+        const unsigned char *str1 = dynamic_cast<FancyString*>(self)->value();
+        const unsigned char *str2 = dynamic_cast<FancyString*>(arg)->value();
+        if(strcmp((const char *)str1,(const char *)str2) == 0) {
           return t;
         }
       }
@@ -128,9 +147,9 @@ namespace fancy {
     {
       EXPECT_ARGS("String#+", 1);
       if(FancyString* arg = dynamic_cast<FancyString*>(args[0])) {
-        string str1 = dynamic_cast<FancyString*>(self)->value();
-        string str2 = arg->value();
-        return FancyString::from_value(str1 + str2);
+        const unsigned char *str1 = dynamic_cast<FancyString*>(self)->value();
+        const unsigned char *str2 = arg->value();
+        return FancyString::from_value(string((const char *)str1) + string((const char *)str2));
       }
       errorln("String#+ expects String argument.");
       return nil;
@@ -140,11 +159,32 @@ namespace fancy {
     {
       EXPECT_ARGS("String#each:", 1);
       if(Block* block = dynamic_cast<Block*>(args[0])) {
-        string str = self->to_s();
+        FancyString *str = dynamic_cast<FancyString*>(self);
+        size_t len = str->encoding()->strlen(str);
+
         FancyObject* retval = nil;
-        for(string::iterator it = str.begin(); it != str.end(); it++) {
-          string str(&(*it), 1);
-          FancyObject* block_args[1] = { FancyString::from_value(str) };
+        for(size_t i=0;i<len;++i) {
+          FancyString *chr = str->encoding()->characterAt(str,i);
+          FancyObject* block_args[1] = { chr };
+          retval = block->call(self, block_args, 1, scope);
+        }
+        return retval;
+      }
+      errorln("String#each: expects Block argument.");
+      return nil;
+    }
+
+    METHOD(StringClass, each_byte)
+    {
+      EXPECT_ARGS("String#each_byte:", 1);
+      if(Block* block = dynamic_cast<Block*>(args[0])) {
+        FancyString *str = dynamic_cast<FancyString*>(self);
+        size_t len = str->bytes();
+        const unsigned char *c = str->value();
+
+        FancyObject* retval = nil;
+        for(size_t i=0;i<len;++i) {
+          FancyObject* block_args[1] = { new Number((int)c[i]) };
           retval = block->call(self, block_args, 1, scope);
         }
         return retval;
@@ -157,9 +197,8 @@ namespace fancy {
     {
       EXPECT_ARGS("String#at:", 1);
       if(Number* index = dynamic_cast<Number*>(args[0])) {
-        string str = self->to_s();
-        string char_str = string(&str.at(index->intval()), 1);
-        return FancyString::from_value(char_str);
+        FancyString* str = dynamic_cast<FancyString*>(self);
+        return str->encoding()->characterAt(str,index->intval());
       }
       errorln("String#at: expects Number argument.");
       return nil;
@@ -167,7 +206,7 @@ namespace fancy {
 
     METHOD(StringClass, eval)
     {
-      string code = self->to_s();
+      string code = string((const char *)(self->to_s().value()));
       return parser::parse_string(code);
     }
 

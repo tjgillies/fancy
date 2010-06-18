@@ -1,4 +1,5 @@
 #include "native_method.h"
+#include "string.h"
 #include "bootstrap/core_classes.h"
 
 namespace fancy {
@@ -41,9 +42,9 @@ namespace fancy {
     return EXP_NATIVEMETHOD;
   }
 
-  string NativeMethod::to_s() const
+  const FancyString NativeMethod::to_s() const
   {
-    return "<NativeMethod:'" + _identifier + "' Doc:'" + _docstring + "'>";
+    return FancyString("<NativeMethod:'" + _identifier + "' Doc:'" + _docstring + "'>");
   }
 
   FancyObject* NativeMethod::call(FancyObject* self, FancyObject* *args, int argc, Scope *scope)

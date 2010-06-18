@@ -9,11 +9,13 @@ operator_definition class_operator_definition try_catch_block super
 parser_files = parser/lex parser/bison
 
 bootstrap_files = core_classes object class block string number		\
-console array file directory scope hash exception method system
+console array file directory scope hash exception method system encoding
 
 files = fancy_object true nil hash array symbol number string		\
 native_method scope lexical_scope class errors method regexp block	\
-utils file directory fancy_exception
+utils file directory fancy_exception encoding \
+encodings/encoding_utf8 encodings/encoding_utf16 encodings/encoding_utf32 \
+encodings/encoding_one_byte_codings
 
 src_files = $(foreach file, $(files), $(file).cc) 			\
 $(foreach file, $(bootstrap_files), bootstrap/$(file).cc) 		\
@@ -27,7 +29,7 @@ $(foreach file, $(parser_files), $(file).o) 				\
 parser/parser.o								\
 $(foreach file, $(parser_node_files), parser/nodes/$(file).o) main.o
 
-sub_dirs = parser bootstrap
+sub_dirs = parser bootstrap encodings
 
 GCLIB = ../vendor/gc/.libs/libgccpp.a ../vendor/gc/.libs/libgc.a
 
@@ -35,7 +37,7 @@ all: subdirs ../bin/fancy
 
 ../bin/fancy: $(obj_files)
 	@mkdir -p ../bin/
-	$(cc) $(cc_flags) $(obj_files) $(GCLIB) -o ../bin/fancy -lfl
+	$(cc) $(cc_flags) $(obj_files) $(GCLIB) -o ../bin/fancy -lfl `icu-config --ldflags`
 
 main.o: $(foreach file, $(src_files), $(file)) parser/fancy.lex parser/fancy.y
 	$(cc) $(cc_flags) -c main.cc -o main.o
@@ -96,6 +98,9 @@ file.o: file.cc
 
 fancy_exception.o: fancy_exception.cc
 	$(cc) $(cc_flags) -c fancy_exception.cc -o fancy_exception.o
+
+encoding.o: encoding.cc encoding.h
+	$(cc) $(cc_flags) -c encoding.cc -o encoding.o
 
 subdirs:
 	$(foreach dir, $(sub_dirs), cd $(dir) && make && cd ..;)
