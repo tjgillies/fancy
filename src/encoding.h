@@ -3,6 +3,7 @@
 
 #include "fancy_object.h"
 namespace fancy {
+  class Number;
 
   /**
    * String class representing String objects within Fancy.
@@ -28,6 +29,7 @@ namespace fancy {
     virtual FancyString *substr(const FancyString *str,int start,int end) const = 0;
     virtual int strlen(const FancyString *str) const = 0;
     virtual FancyString *characterAt(const FancyString *str,int index) const = 0;
+    virtual Number *codePointAt(const FancyString *str,int index) const = 0;
     virtual FancyString *downcase(const FancyString *str) const = 0;
     virtual FancyString *upcase(const FancyString *str) const = 0;
 

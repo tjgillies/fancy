@@ -5,6 +5,7 @@
 
 #include "../encodings/encodings.h"
 
+#include "../number.h"
 #include "../string.h"
 #include "../number.h"
 #include "../block.h"
@@ -63,6 +64,11 @@ namespace fancy {
                  "at:",
                  "Returns the character at the given index.",
                  at);
+
+      DEF_METHOD(StringClass,
+                 "code_at:",
+                 "Returns the character code point at the given index.",
+                 cp_at);
 
       DEF_METHOD(StringClass,
                  "eval",
@@ -201,6 +207,17 @@ namespace fancy {
         return str->characterAt(index->intval());
       }
       errorln("String#at: expects Number argument.");
+      return nil;
+    }
+
+    METHOD(StringClass, cp_at)
+    {
+      EXPECT_ARGS("String#code_at:", 1);
+      if(Number* index = dynamic_cast<Number*>(args[0])) {
+        FancyString* str = dynamic_cast<FancyString*>(self);
+        return str->codePointAt(index->intval());
+      }
+      errorln("String#code_at: expects Number argument.");
       return nil;
     }
 

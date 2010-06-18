@@ -7,6 +7,7 @@
 namespace fancy {
 
   class FancyEncoding;
+  class Number;
 
   /**
    * String class representing String objects within Fancy.
@@ -63,6 +64,7 @@ namespace fancy {
     FancyString *substr(int start,int end) const;
     int strlen() const;
     FancyString *characterAt(int index) const;
+    Number *codePointAt(int index) const;
     FancyString *downcase() const;
     FancyString *upcase() const;
 

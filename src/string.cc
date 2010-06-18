@@ -1,3 +1,4 @@
+#include "number.h"
 #include "encodings/encodings.h"
 #include "string.h"
 #include "bootstrap/core_classes.h"
@@ -89,6 +90,7 @@ namespace fancy {
   FancyString *FancyString::substr(int start,int end) const { return _encoding->substr(this,start,end); }
   int FancyString::strlen() const { return _encoding->strlen(this); }
   FancyString *FancyString::characterAt(int index) const { return _encoding->characterAt(this,index); }
+  Number *FancyString::codePointAt(int index) const { return _encoding->codePointAt(this,index); }
   FancyString *FancyString::downcase() const { return _encoding->downcase(this); }
   FancyString *FancyString::upcase() const { return _encoding->upcase(this); }
 

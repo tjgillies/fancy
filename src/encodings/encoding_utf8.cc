@@ -1,4 +1,5 @@
 #include "../fancy_object.h"
+#include "../number.h"
 #include "../string.h"
 #include "../encoding.h"
 #include "encoding_utf8.h"
@@ -39,13 +40,22 @@ namespace fancy {
     string utf8str;
     StringByteSink<string> sbs(&utf8str);
 
-    UChar chr = str1[index];
+    UChar32 chr = str1.char32At(index);
 
     if(chr == 0xFFFF) return NULL;
     str1 = chr;
     str1.toUTF8(sbs);
 
     return new FancyString(utf8str.c_str());
+  }
+
+  Number *FancyEncodingUTF8::codePointAt(const FancyString *str,int index) const
+  {
+    UnicodeString str1 = UnicodeString::fromUTF8((const char *)(str->value()));
+    UChar32 chr = str1.char32At(index);
+
+    if(chr == 0xFFFF) return NULL;
+    return new Number(chr);
   }
 
   FancyString *FancyEncodingUTF8::downcase(const FancyString *str) const {

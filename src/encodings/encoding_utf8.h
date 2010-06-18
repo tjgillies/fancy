@@ -16,6 +16,7 @@ namespace fancy {
     FancyString *substr(const FancyString *str,int start,int end) const;
     int strlen(const FancyString *str) const;
     FancyString *characterAt(const FancyString *str,int index) const;
+    Number *codePointAt(const FancyString *str,int index) const;
     FancyString *downcase(const FancyString *str) const;
     FancyString *upcase(const FancyString *str) const;
 
