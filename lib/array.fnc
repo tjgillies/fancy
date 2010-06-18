@@ -108,7 +108,7 @@ def class Array {
     self join: (String new)
   }
 
-  def each_with_index: block {
+  NATIVE def each_with_index: block {
     "Iterate over all elements in Array. Calls a given Block with each element and its index.";
 
     self size times: |idx| {
@@ -116,7 +116,7 @@ def class Array {
     }
   }
   
-  def select_with_index: condition {
+  NATIVE def select_with_index: condition {
     "Same as select, just gets also called with an additional argument for each element's index value.";
     
     coll = [];
@@ -126,8 +126,8 @@ def class Array {
     coll
   };
 
-  def reject!: condition {
-    "Removes all elements in place, that meet the condition";
+  NATIVE def reject!: condition {
+    "Removes all elements in place, that meet the condition.";
     
     entries = self select_with_index: |x i| { condition call: x };
     self remove_at: $ entries map: |e| { e second };
