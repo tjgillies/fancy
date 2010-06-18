@@ -26,6 +26,16 @@ namespace fancy {
                   encoding);
 
       DEF_METHOD(StringClass,
+                 "length",
+                 "Returns the number of characters in the string.",
+                 length);
+
+      DEF_METHOD(StringClass,
+                 "bytes",
+                 "Returns the number of bytes in the string.",
+                 bytes);
+
+      DEF_METHOD(StringClass,
                  "downcase",
                  "Returns the downcased version of self.",
                  downcase);
@@ -87,6 +97,18 @@ namespace fancy {
     /**
      * String instance methods
      */
+
+    METHOD(StringClass, length)
+    {
+      FancyString *str = dynamic_cast<FancyString*>(self);
+      return new Number((int)str->strlen());
+    }
+
+    METHOD(StringClass, bytes)
+    {
+      FancyString *str = dynamic_cast<FancyString*>(self);
+      return new Number((int)str->bytes());
+    }
 
     METHOD(StringClass, encoding)
     {
