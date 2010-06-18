@@ -17,9 +17,9 @@ namespace fancy {
     return new FancyEncodingUTF8();
   }
 
-  FancyString *FancyEncodingUTF8::substr(const FancyString *str,int start,int end) const {
+  FancyString *FancyEncodingUTF8::substr(const FancyString *str,int start,int len) const {
     UnicodeString str1 = UnicodeString::fromUTF8((const char *)(str->value()));
-    UnicodeString substr(str1,(int32_t)start,(int32_t)(end-start));
+    UnicodeString substr(str1,(int32_t)start,(int32_t)len);
 
     string utf8str;
     StringByteSink<string> sbs(&utf8str);
