@@ -15,7 +15,7 @@ namespace fancy {
     static const char *strings[] = {"\\n","\\t",NULL};
     static const char *replacements = "\n\t";
 
-    size_t len = strlen((const char *)chr),i,replaced;
+    size_t len = ::strlen((const char *)chr),i,replaced;
     unsigned char *new_str = (unsigned char *)malloc(2 * len),*ptr,*ptr1;
 
     *bytes = 0;
@@ -23,9 +23,9 @@ namespace fancy {
     for(ptr=(unsigned char *)chr,ptr1=new_str;*ptr;++ptr) {
       replaced = 0;
       for(i=0;strings[i];++i) {
-        if(strncmp((const char *)ptr,strings[i],strlen(strings[i])) == 0) {
+        if(strncmp((const char *)ptr,strings[i],::strlen(strings[i])) == 0) {
           *ptr1++ = replacements[i];
-          ptr += strlen(strings[i]);
+          ptr += ::strlen(strings[i]);
           replaced = 1;
           (*bytes)++;
           break;
@@ -84,6 +84,14 @@ namespace fancy {
   {
     return _encoding;
   }
+
+
+  FancyString *FancyString::substr(int start,int end) const { return _encoding->substr(this,start,end); }
+  int FancyString::strlen() const { return _encoding->strlen(this); }
+  FancyString *FancyString::characterAt(int index) const { return _encoding->characterAt(this,index); }
+  FancyString *FancyString::downcase() const { return _encoding->downcase(this); }
+  FancyString *FancyString::upcase() const { return _encoding->upcase(this); }
+
 
   FancyString::~FancyString()
   {

@@ -59,6 +59,13 @@ namespace fancy {
     static FancyString* from_value(const unsigned char *value);
     static FancyString* from_value(const string &value);
 
+
+    FancyString *substr(int start,int end) const;
+    int strlen() const;
+    FancyString *characterAt(int index) const;
+    FancyString *downcase() const;
+    FancyString *upcase() const;
+
   private:
     size_t _bytes;
     unsigned char *_value;

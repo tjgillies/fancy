@@ -91,14 +91,14 @@ namespace fancy {
     METHOD(StringClass, downcase)
     {
       FancyString* str = dynamic_cast<FancyString*>(self);
-      FancyString* nstr = str->encoding()->downcase(str);
+      FancyString* nstr = str->downcase();
       return nstr;
     }
 
     METHOD(StringClass, upcase)
     {
       FancyString* str = dynamic_cast<FancyString*>(self);
-      FancyString* nstr = str->encoding()->upcase(str);
+      FancyString* nstr = str->upcase();
       return nstr;
     }
 
@@ -116,9 +116,9 @@ namespace fancy {
 
         // deal with negative indexes
         if(idx2->intval() < 0) {
-          substr = str->encoding()->substr(str,idx1->intval(), (str->encoding()->strlen(str) + 1) + idx2->intval());
+          substr = str->substr(idx1->intval(), (str->strlen() + 1) + idx2->intval());
         } else {
-          substr = str->encoding()->substr(str,idx1->intval(), (idx2->intval() + 1) - idx1->intval());
+          substr = str->substr(idx1->intval(), (idx2->intval() + 1) - idx1->intval());
         }
         return substr;
       } else {
@@ -160,11 +160,11 @@ namespace fancy {
       EXPECT_ARGS("String#each:", 1);
       if(Block* block = dynamic_cast<Block*>(args[0])) {
         FancyString *str = dynamic_cast<FancyString*>(self);
-        size_t len = str->encoding()->strlen(str);
+        size_t len = str->strlen();
 
         FancyObject* retval = nil;
         for(size_t i=0;i<len;++i) {
-          FancyString *chr = str->encoding()->characterAt(str,i);
+          FancyString *chr = str->characterAt(i);
           FancyObject* block_args[1] = { chr };
           retval = block->call(self, block_args, 1, scope);
         }
@@ -198,7 +198,7 @@ namespace fancy {
       EXPECT_ARGS("String#at:", 1);
       if(Number* index = dynamic_cast<Number*>(args[0])) {
         FancyString* str = dynamic_cast<FancyString*>(self);
-        return str->encoding()->characterAt(str,index->intval());
+        return str->characterAt(index->intval());
       }
       errorln("String#at: expects Number argument.");
       return nil;
