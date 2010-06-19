@@ -9,11 +9,11 @@ operator_definition class_operator_definition try_catch_block super
 parser_files = parser/lex parser/bison
 
 bootstrap_files = core_classes object class block string number		\
-console array file directory scope hash exception method system
+console array file directory scope continuation hash exception method system
 
 files = fancy_object true nil hash array symbol number string		\
-native_method scope lexical_scope class errors method regexp block	\
-utils file directory fancy_exception
+native_method scope continuation lexical_scope class errors method regexp block	\
+utils file directory fancy_exception interpreter
 
 src_files = $(foreach file, $(files), $(file).cc) 			\
 $(foreach file, $(bootstrap_files), bootstrap/$(file).cc) 		\
@@ -73,6 +73,9 @@ native_method.o: native_method.cc
 scope.o: scope.cc
 	$(cc) $(cc_flags) -c scope.cc -o scope.o
 
+continuation.o: continuation.cc
+	$(cc) $(cc_flags) -c continuation.cc -o continuation.o
+
 lexical_scope.o: lexical_scope.cc
 	$(cc) $(cc_flags) -c lexical_scope.cc -o lexical_scope.o
 
@@ -96,6 +99,9 @@ file.o: file.cc
 
 fancy_exception.o: fancy_exception.cc
 	$(cc) $(cc_flags) -c fancy_exception.cc -o fancy_exception.o
+
+interpreter.o: interpreter.cc
+	$(cc) $(cc_flags) -c interpreter.cc -o interpreter.o
 
 subdirs:
 	$(foreach dir, $(sub_dirs), cd $(dir) && make && cd ..;)
