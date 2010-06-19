@@ -63,11 +63,18 @@ namespace fancy {
       buf.lineno = yylineno;
       buf.file = NULL;
       buf.filename = "";
+      buf.expression_list = all_exprs;
 
       yylineno = 1;
       yy_switch_to_buffer(buf.buffstate);
+      all_exprs = new nodes::expression_node;
+      all_exprs->expression = NULL;
+      all_exprs->next = NULL;
 
       yyparse();
+
+      Interpreter interp(all_exprs, global_scope);
+      interp.run();
 
       // delete string buffer
       yy_delete_buffer(buf.buffstate);
@@ -78,6 +85,7 @@ namespace fancy {
         yy_switch_to_buffer(prev.buffstate);
         yylineno = prev.lineno;
         current_file = prev.filename;
+        all_exprs = prev.expression_list;
       }
 
       // finally, return the last evaluated value
