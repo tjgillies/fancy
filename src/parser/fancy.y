@@ -554,14 +554,18 @@ except_handler_node(nodes::Identifier* classname, nodes::Identifier* localname, 
 
 void insert_expression(nodes::expression_node* list, Expression* expr)
 {
-  if(!list) {
-    list = new nodes::expression_node;
+  if(!list->expression) {
     list->expression = expr;
     list->next = NULL;
   } else {
-    expression_node* n = new nodes::expression_node;
+    nodes::expression_node* end = list;
+    if(end) {
+      for(; end->next != NULL; end = end->next) {
+      }
+    }
+    nodes::expression_node* n = new nodes::expression_node;
     n->expression = expr;
     n->next = NULL;
-    list->next = n;
-  } 
+    end->next = n;
+  }
 }

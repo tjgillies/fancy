@@ -36,7 +36,12 @@ namespace fancy {
         load_path.unique(); // remove double entries
       }
 
-      if(push_buffer(filename, all_exprs)) {
+      nodes::expression_node* old_expr = all_exprs;
+      all_exprs = new nodes::expression_node;
+      all_exprs->expression = NULL;
+      all_exprs->next = NULL;
+
+      if(push_buffer(filename, old_expr)) {
         try {
           yyparse();
           Interpreter* interp = new Interpreter(all_exprs, global_scope);
@@ -106,6 +111,7 @@ namespace fancy {
     {
       if(!parse_buffers.empty()) {
         parser_buffer buf = parse_buffers.top();
+        all_exprs = buf.expression_list;
         parse_buffers.pop();
         
         fclose(buf.file);
@@ -115,7 +121,6 @@ namespace fancy {
           parser_buffer prev = parse_buffers.top();
           yy_switch_to_buffer(prev.buffstate);
           yylineno = prev.lineno;
-          all_exprs = prev.expression_list;
           current_file = prev.filename;
         }
       }

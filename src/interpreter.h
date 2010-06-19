@@ -23,6 +23,7 @@ namespace fancy {
     parser::nodes::expression_node* _expressions;
     parser::nodes::expression_node* _current_expr;
     Scope* _current_scope;
+    unsigned int _expr_count;
   };
 
 }
