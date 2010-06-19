@@ -47,7 +47,7 @@ namespace fancy {
     return _argnames;
   }
 
-  FancyObject* Method::call(FancyObject* self, FancyObject* *args, int argc, Scope *scope)
+  FancyObject* Method::call(FancyObject* self, FancyObject* *args, int argc, Scope *scope, Interpreter* interp)
   {
     // check if method is empty
     if(_body->size() == 0)
@@ -77,7 +77,7 @@ namespace fancy {
       }
     
       // finally, eval the methods body expression
-      FancyObject* val = _body->eval(call_scope);
+      FancyObject* val = _body->eval(call_scope, interp);
       if(!call_scope->is_closed()) {
         delete call_scope;
         call_scope = NULL;
@@ -88,14 +88,14 @@ namespace fancy {
     return nil;
   }
 
-  FancyObject* Method::call(FancyObject* self, Scope *scope)
+  FancyObject* Method::call(FancyObject* self, Scope *scope, Interpreter* interp)
   {
     // check if method is empty
     if(_body->size() == 0)
       return nil;
 
     Scope* call_scope = new Scope(self, scope);
-    FancyObject* val = _body->eval(call_scope);
+    FancyObject* val = _body->eval(call_scope, interp);
     if(!call_scope->is_closed()) {
       delete call_scope;
       call_scope = NULL;

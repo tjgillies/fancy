@@ -22,12 +22,12 @@ namespace fancy {
       {
       }
 
-      FancyObject* OperatorSend::eval(Scope *scope)
+      FancyObject* OperatorSend::eval(Scope *scope, Interpreter* interp)
       {
         // FancyObject* self = scope->current_self();
-        FancyObject* args[1] = { _operand->eval(scope) };
-        FancyObject* receiver_obj = _receiver->eval(scope);
-        return receiver_obj->send_message(_operator_name->name(), args, 1, scope, scope->current_self());
+        FancyObject* args[1] = { _operand->eval(scope, interp) };
+        FancyObject* receiver_obj = _receiver->eval(scope, interp);
+        return receiver_obj->send_message(_operator_name->name(), args, 1, scope, interp, scope->current_self());
       }
 
       EXP_TYPE OperatorSend::type() const

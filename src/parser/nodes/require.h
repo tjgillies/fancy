@@ -20,7 +20,7 @@ namespace fancy {
         virtual ~RequireStatement();
 
         virtual EXP_TYPE type() const;
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
 
       private:
         string _filename;

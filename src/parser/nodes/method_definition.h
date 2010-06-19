@@ -21,7 +21,7 @@ namespace fancy {
         virtual ~MethodDefExpr() {}
 
         virtual EXP_TYPE type() const;
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
  
       protected:
         string method_name();
@@ -37,7 +37,7 @@ namespace fancy {
         PrivateMethodDefExpr(list< pair<Identifier*, Identifier*> > args_with_name, Method* method);
         virtual ~PrivateMethodDefExpr() {}
 
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
       };
 
       class ProtectedMethodDefExpr : public MethodDefExpr
@@ -47,7 +47,7 @@ namespace fancy {
         ProtectedMethodDefExpr(list< pair<Identifier*, Identifier*> > args_with_name, Method* method);
         virtual ~ProtectedMethodDefExpr() {}
 
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
       };
 
     }

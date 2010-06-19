@@ -25,7 +25,7 @@ namespace fancy {
         ~ExceptionHandler();
 
         bool can_handle(Class* the_class, Scope *scope);
-        FancyObject* handle(FancyException* exception, Scope *scope);
+        FancyObject* handle(FancyException* exception, Scope *scope, Interpreter* interp);
 
       private:
         Identifier* _exception_class_name;
@@ -44,7 +44,7 @@ namespace fancy {
         virtual ~TryCatchBlock();
 
         virtual EXP_TYPE type() const;
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
 
       private:
         void init_except_handlers(except_handler_list* except_handlers);

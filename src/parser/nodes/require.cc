@@ -23,7 +23,7 @@ namespace fancy {
         return EXP_REQUIRESTATEMENT;
       }
 
-      FancyObject* RequireStatement::eval(Scope *scope)
+      FancyObject* RequireStatement::eval(Scope *scope, Interpreter* interp)
       {
         parse_file(_filename);
         return nil;

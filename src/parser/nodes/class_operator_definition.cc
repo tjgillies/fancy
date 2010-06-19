@@ -17,7 +17,7 @@ namespace fancy {
         return EXP_OPERATORDEFEXPR;
       }
 
-      FancyObject* ClassOperatorDefExpr::eval(Scope *scope)
+      FancyObject* ClassOperatorDefExpr::eval(Scope *scope, Interpreter* interp)
       {
         scope->get(_class_name->name())->def_singleton_method(_op_name->name(), _method);
         return _method;
@@ -33,7 +33,7 @@ namespace fancy {
       {
       }
 
-      FancyObject* PrivateClassOperatorDefExpr::eval(Scope *scope)
+      FancyObject* PrivateClassOperatorDefExpr::eval(Scope *scope, Interpreter* interp)
       {
         scope->get(_class_name->name())->def_private_singleton_method(_op_name->name(), _method);
         return _method;
@@ -49,7 +49,7 @@ namespace fancy {
       {
       }
 
-      FancyObject* ProtectedClassOperatorDefExpr::eval(Scope *scope)
+      FancyObject* ProtectedClassOperatorDefExpr::eval(Scope *scope, Interpreter* interp)
       {
         scope->get(_class_name->name())->def_protected_singleton_method(_op_name->name(), _method);
         return _method;

@@ -17,7 +17,7 @@ namespace fancy {
         return EXP_OPERATORDEFEXPR;
       }
 
-      FancyObject* OperatorDefExpr::eval(Scope *scope)
+      FancyObject* OperatorDefExpr::eval(Scope *scope, Interpreter* interp)
       {
         scope->current_class()->def_method(_op_name->name(), _method);
         return _method;
@@ -33,7 +33,7 @@ namespace fancy {
       {
       }
 
-      FancyObject* PrivateOperatorDefExpr::eval(Scope *scope)
+      FancyObject* PrivateOperatorDefExpr::eval(Scope *scope, Interpreter* interp)
       {
         scope->current_class()->def_private_method(_op_name->name(), _method);
         return _method;
@@ -49,7 +49,7 @@ namespace fancy {
       {
       }
 
-      FancyObject* ProtectedOperatorDefExpr::eval(Scope *scope)
+      FancyObject* ProtectedOperatorDefExpr::eval(Scope *scope, Interpreter* interp)
       {
         scope->current_class()->def_protected_method(_op_name->name(), _method);
         return _method;

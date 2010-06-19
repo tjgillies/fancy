@@ -29,14 +29,14 @@ namespace fancy {
       {
       }
 
-      FancyObject* MessageSend::eval(Scope *scope)
+      FancyObject* MessageSend::eval(Scope *scope, Interpreter* interp)
       {
         int size = _arg_expressions.size();
         FancyObject* *args = new FancyObject*[size];
         int i = 0;
         list< pair<Identifier*, Expression*> >::iterator it;
         for(it = _arg_expressions.begin(); it != _arg_expressions.end() && i < size; it++) {
-          args[i] = it->second->eval(scope);
+          args[i] = it->second->eval(scope, interp);
           i++;
         }  
   
@@ -44,11 +44,11 @@ namespace fancy {
 
         // check for super call
         if(_receiver->type() == EXP_SUPER) {
-          retval = scope->current_self()->send_super_message(_method_ident->name(), args, size, scope, scope->current_self());
+          retval = scope->current_self()->send_super_message(_method_ident->name(), args, size, scope, interp, scope->current_self());
         } else {
           // if no super call, do normal method call
-          FancyObject* receiver_obj = _receiver->eval(scope);
-          retval = receiver_obj->send_message(_method_ident->name(), args, size, scope, scope->current_self());
+          FancyObject* receiver_obj = _receiver->eval(scope, interp);
+          retval = receiver_obj->send_message(_method_ident->name(), args, size, scope, interp, scope->current_self());
         }
         delete[] args;
         return retval;

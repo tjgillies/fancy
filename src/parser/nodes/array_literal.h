@@ -20,7 +20,7 @@ namespace fancy {
         ArrayLiteral(expression_node *expr_list);
         virtual ~ArrayLiteral();
 
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
         virtual EXP_TYPE type() const;
 
       private:

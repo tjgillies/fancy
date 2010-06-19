@@ -26,7 +26,7 @@ namespace fancy {
         HashLiteral(key_val_node *key_val_list);
         virtual ~HashLiteral();
 
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
         virtual EXP_TYPE type() const;
 
       private:

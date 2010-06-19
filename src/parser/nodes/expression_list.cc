@@ -24,12 +24,12 @@ namespace fancy {
       {
       }
 
-      FancyObject* ExpressionList::eval(Scope *scope)
+      FancyObject* ExpressionList::eval(Scope *scope, Interpreter* interp)
       {
         FancyObject* retval = nil;
         list<Expression*>::iterator it;
         for(it = _expressions.begin(); it != _expressions.end(); it++) {
-          retval = (*it)->eval(scope);
+          retval = (*it)->eval(scope, interp);
           // if(IS_RETURNSTATEMENT((*it))) {
           //   return retval;
           // }

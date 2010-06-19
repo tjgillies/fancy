@@ -70,7 +70,7 @@ namespace fancy {
     /**
      * Inherited from Expression.
      */
-    virtual FancyObject* eval(Scope *scope);
+    virtual FancyObject* eval(Scope *scope, Interpreter* interp);
     virtual EXP_TYPE type() const;
 
     /**
@@ -96,7 +96,12 @@ namespace fancy {
      * @param sender Object, that tries to send the message to this Object.
      * @return The (return) value of the methodcall.
      */
-    FancyObject* send_message(const string &method_name, FancyObject* *arguments, int argc, Scope *scope, FancyObject* sender);
+    FancyObject* send_message(const string &method_name,
+                              FancyObject* *arguments,
+                              int argc,
+                              Scope *scope,
+                              Interpreter* interp,
+                              FancyObject* sender);
 
     /**
      * Calls a method on its superclass with arguments in a given scope.
@@ -107,7 +112,12 @@ namespace fancy {
      * @param sender Object, that tries to send the message to this Object.
      * @return The (return) value of the methodcall.
      */
-    FancyObject* send_super_message(const string &method_name, FancyObject* *arguments, int argc, Scope *scope, FancyObject* sender);
+    FancyObject* send_super_message(const string &method_name,
+                                    FancyObject* *arguments,
+                                    int argc,
+                                    Scope *scope,
+                                    Interpreter* interp,
+                                    FancyObject* sender);
 
     /**
      * Define a singleton method on a FancyObject.

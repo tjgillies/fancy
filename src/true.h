@@ -21,7 +21,7 @@ namespace fancy {
      * See FancyObject for these methods.
      */
     virtual FancyObject* equal(FancyObject* other) const;
-    virtual FancyObject* eval(Scope *scope);
+    virtual FancyObject* eval(Scope *scope, Interpreter* interp);
     virtual EXP_TYPE type() const;
     virtual string to_s() const;
   };

@@ -14,7 +14,7 @@ namespace fancy {
     return nil;
   }
 
-  FancyObject* Nil::eval(Scope *scope)
+  FancyObject* Nil::eval(Scope *scope, Interpreter* interp)
   {
     return nil;
   }

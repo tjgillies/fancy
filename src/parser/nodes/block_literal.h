@@ -31,7 +31,7 @@ namespace fancy {
         BlockLiteral(block_arg_node *argnames, ExpressionList* body);
         virtual ~BlockLiteral();
 
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
         virtual EXP_TYPE type() const;
 
       private:

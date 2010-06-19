@@ -13,7 +13,7 @@ namespace fancy {
       {
       }
       
-      FancyObject* Super::eval(Scope *scope)
+      FancyObject* Super::eval(Scope *scope, Interpreter* interp)
       {
         // we simply return nil, since this value isn't needed.
         // see MethodCall#eval() for dealing with super method calls.

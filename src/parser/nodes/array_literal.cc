@@ -15,13 +15,13 @@ namespace fancy {
       {
       }
 
-      FancyObject* ArrayLiteral::eval(Scope *scope)
+      FancyObject* ArrayLiteral::eval(Scope *scope, Interpreter* interp)
       {
         vector<FancyObject*> values;
         for(list<Expression*>::iterator it = _expressions.begin();
             it != _expressions.end();
             it++) {
-          values.push_back((*it)->eval(scope));
+          values.push_back((*it)->eval(scope, interp));
         }
         return new Array(values);
       }

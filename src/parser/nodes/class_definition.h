@@ -17,7 +17,7 @@ namespace fancy {
         ClassDefExpr(Identifier* superclass_name, Identifier* class_name, ExpressionList* class_body);
         virtual ~ClassDefExpr();
 
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
         virtual EXP_TYPE type() const;
   
       private:

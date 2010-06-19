@@ -21,9 +21,9 @@ namespace fancy {
         return EXP_ASSIGNEXPR;
       }
 
-      FancyObject* AssignmentExpr::eval(Scope *scope)
+      FancyObject* AssignmentExpr::eval(Scope *scope, Interpreter* interp)
       {
-        FancyObject* value = _value_expr->eval(scope);
+        FancyObject* value = _value_expr->eval(scope, interp);
         scope->define(_identifier->name(), value);
         return value;
       }

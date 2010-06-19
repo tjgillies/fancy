@@ -22,7 +22,7 @@ namespace fancy {
         ~AssignmentExpr();
   
         virtual EXP_TYPE type() const;
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
 
       private:
         Identifier*  _identifier;

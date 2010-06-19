@@ -30,13 +30,13 @@ namespace fancy {
         return false;
       }
 
-      FancyObject* ExceptionHandler::handle(FancyException* exception, Scope *scope)
+      FancyObject* ExceptionHandler::handle(FancyException* exception, Scope *scope, Interpreter* interp)
       {
         Scope *catch_scope = new Scope(scope);
         if(_local_name->name() != "") {
           scope->define(_local_name->name(), exception);
         }
-        return _body->eval(catch_scope);
+        return _body->eval(catch_scope, interp);
       }
 
       // TryCatchBlock
@@ -84,7 +84,7 @@ namespace fancy {
         return EXP_TRYCATCHBLOCK;
       }
 
-      FancyObject* TryCatchBlock::eval(Scope *scope)
+      FancyObject* TryCatchBlock::eval(Scope *scope, Interpreter* interp)
       {
         // OK, I admit this code looks kinda ugly. But it's pretty
         // simple actually:
@@ -98,27 +98,27 @@ namespace fancy {
 
         try {
           if(!_finally_block) {
-            return _body->eval(scope);
+            return _body->eval(scope, interp);
           } else {
-            _body->eval(scope);
-            return _finally_block->eval(scope);
+            _body->eval(scope, interp);
+            return _finally_block->eval(scope, interp);
           }
         } catch(FancyException* ex) {
           for(list<ExceptionHandler*>::iterator it = _except_handlers.begin();
               it != _except_handlers.end();
               it++) {
             if((*it)->can_handle(ex->exception_class(), scope)) {
-              FancyObject* retval = (*it)->handle(ex, scope);
+              FancyObject* retval = (*it)->handle(ex, scope, interp);
               // eval finally block if any given
               if(_finally_block) {
-                retval = _finally_block->eval(scope);
+                retval = _finally_block->eval(scope, interp);
               }
               return retval;
             }
           }
           // always eval finally block!
           if(_finally_block) {
-            _finally_block->eval(scope);
+            _finally_block->eval(scope, interp);
           }
           throw ex; // no handler defined
         }

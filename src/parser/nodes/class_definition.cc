@@ -30,7 +30,7 @@ namespace fancy {
       {
       }
 
-      FancyObject* ClassDefExpr::eval(Scope *scope)
+      FancyObject* ClassDefExpr::eval(Scope *scope, Interpreter* interp)
       {
         Class* the_class = 0;
         FancyObject* class_obj = scope->get(_class_name->name());
@@ -62,7 +62,7 @@ namespace fancy {
         // and eval the body of the class definition
         Scope *class_eval_scope = new Scope(the_class, scope);
         class_eval_scope->set_current_class(the_class);
-        _class_body->eval(class_eval_scope);
+        _class_body->eval(class_eval_scope, interp);
         // set documentation string
         the_class->set_docstring(_class_body->docstring());
         return the_class;

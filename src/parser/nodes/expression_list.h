@@ -48,7 +48,7 @@ namespace fancy {
          * @return The value of the last evaluated Expression in the
          * ExpressionList.
          */  
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
         virtual EXP_TYPE type() const;
 
         /**

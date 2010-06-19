@@ -5,6 +5,9 @@
 #include "../fancy_exception.h"
 #include "../utils.h"
 #include "../bootstrap/core_classes.h"
+#include "../scope.h"
+#include "../interpreter.h"
+
 
 /* prototype of bison-generated parser function */
 extern int yyparse();
@@ -21,6 +24,7 @@ namespace fancy {
     stack<parser_buffer> parse_buffers;
     list<string> load_path;
     FancyObject* last_value = nil;
+    nodes::expression_node* all_exprs;
 
     void parse_file(string &filename)
     {
@@ -32,9 +36,11 @@ namespace fancy {
         load_path.unique(); // remove double entries
       }
 
-      if(push_buffer(filename)) {
+      if(push_buffer(filename, all_exprs)) {
         try {
           yyparse();
+          Interpreter* interp = new Interpreter(all_exprs, global_scope);
+          interp->run();
         } catch(FancyException* ex) {
           errorln("GOT UNCAUGHT EXCEPTION, ABORTING.");
           errorln(ex->to_s());
@@ -73,7 +79,7 @@ namespace fancy {
       return last_value;
     }
 
-    bool push_buffer(const string &filename)
+    bool push_buffer(const string &filename, nodes::expression_node* curr_expression_list)
     {
       parser_buffer buf;
       FILE *f = find_open_file(filename);
@@ -86,6 +92,7 @@ namespace fancy {
       buf.file = f;
       buf.filename = filename;
       buf.lineno = yylineno;
+      buf.expression_list = curr_expression_list;
       parse_buffers.push(buf);
       
       current_file = filename;
@@ -108,6 +115,7 @@ namespace fancy {
           parser_buffer prev = parse_buffers.top();
           yy_switch_to_buffer(prev.buffstate);
           yylineno = prev.lineno;
+          all_exprs = prev.expression_list;
           current_file = prev.filename;
         }
       }

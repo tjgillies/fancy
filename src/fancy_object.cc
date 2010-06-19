@@ -71,7 +71,7 @@ namespace fancy {
     return nil; // default return value
   }
 
-  FancyObject* FancyObject::eval(Scope *scope)
+  FancyObject* FancyObject::eval(Scope *scope, Interpreter* interp)
   {
     return this;
   }
@@ -91,7 +91,7 @@ namespace fancy {
     return to_s();
   }
 
-  FancyObject* FancyObject::send_message(const string &method_name, FancyObject* *arguments, int argc, Scope *scope, FancyObject* sender)
+  FancyObject* FancyObject::send_message(const string &method_name, FancyObject* *arguments, int argc, Scope *scope, Interpreter* interp, FancyObject* sender)
   {
     Callable* method = get_method(method_name);
     scope->set_current_sender(sender);
@@ -108,16 +108,16 @@ namespace fancy {
             throw new MethodNotFoundError(method_name, _class, "protected method");
           }
         }
-        return method->call(this, scope);
+        return method->call(this, scope, interp);
       }
-      return method->call(this, arguments, argc, scope);
+      return method->call(this, arguments, argc, scope, interp);
     } else {
       // handle unkown messages, if unkown_message:with*arams is defined
       if(Callable* unkown_message_method = get_method("unknown_message:with_params:")) {
         int size = sizeof(arguments) / sizeof(arguments[0]);
         vector<FancyObject*> arr_vec(arguments, &arguments[size]);
         FancyObject* new_args[2] = { FancyString::from_value(method_name), new Array(arr_vec) };
-        return unkown_message_method->call(this, new_args, 2, scope);
+        return unkown_message_method->call(this, new_args, 2, scope, interp);
       }
       
       // in this case no method is found and we raise a MethodNotFoundError
@@ -127,7 +127,7 @@ namespace fancy {
     }
   }
 
-  FancyObject* FancyObject::send_super_message(const string &method_name, FancyObject* *arguments, int argc, Scope *scope, FancyObject* sender)
+  FancyObject* FancyObject::send_super_message(const string &method_name, FancyObject* *arguments, int argc, Scope *scope, Interpreter* interp, FancyObject* sender)
   {
     scope->set_current_sender(sender);
     if(Class* superclass = _class->superclass()) {
@@ -145,16 +145,16 @@ namespace fancy {
               throw new MethodNotFoundError(method_name, _class, "protected method");
             }
           }
-          return method->call(this, scope);
+          return method->call(this, scope, interp);
         }
-        return method->call(this, arguments, argc, scope);
+        return method->call(this, arguments, argc, scope, interp);
       } else {
         // handle unkown messages, if unkown_message:with_params is defined
         if(Callable* unkown_message_method = _class->superclass()->find_method("unknown_message:with_params:")) {
           int size = sizeof(arguments) / sizeof(arguments[0]);
           vector<FancyObject*> arr_vec(arguments, &arguments[size]);
           FancyObject* new_args[2] = { FancyString::from_value(method_name), new Array(arr_vec) };
-          return unkown_message_method->call(this, new_args, 2, scope);
+          return unkown_message_method->call(this, new_args, 2, scope, interp);
         }
       
         // in this case no method is found and we raise a MethodNotFoundError

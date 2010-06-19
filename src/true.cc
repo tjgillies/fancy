@@ -14,7 +14,7 @@ namespace fancy {
     return nil;
   }
 
-  FancyObject* True::eval(Scope *scope)
+  FancyObject* True::eval(Scope *scope, Interpreter* interp)
   {
     return t;
   }

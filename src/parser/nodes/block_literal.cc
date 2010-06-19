@@ -24,7 +24,7 @@ namespace fancy {
       {
       }
 
-      FancyObject* BlockLiteral::eval(Scope *scope)
+      FancyObject* BlockLiteral::eval(Scope *scope, Interpreter* interp)
       {
         LexicalScope* lex = new LexicalScope(scope);
         return new Block(_argnames, _body, lex);

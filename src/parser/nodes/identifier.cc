@@ -14,7 +14,7 @@ namespace fancy {
       {
       }
 
-      FancyObject* Identifier::eval(Scope *scope)
+      FancyObject* Identifier::eval(Scope *scope, Interpreter* interp)
       {
         return scope->get(_name);
       }

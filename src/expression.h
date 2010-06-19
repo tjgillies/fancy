@@ -9,6 +9,7 @@ namespace fancy {
 
   class Scope;
   class FancyObject;
+  class Interpreter;
 
   /**
    * Enum holding all possible types of objects/expressions in Fancy.
@@ -59,7 +60,7 @@ namespace fancy {
   class Expression : public gc_cleanup
   {
   public:
-    virtual FancyObject* eval(Scope *scope) = 0;
+    virtual FancyObject* eval(Scope *scope, Interpreter* interp) = 0;
     virtual EXP_TYPE type() const = 0;
   };
 

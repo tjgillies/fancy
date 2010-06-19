@@ -21,7 +21,7 @@ namespace fancy {
      * @param args List of arguments to the call.
      * @param scope The calling scope.
      */
-    virtual FancyObject* call(FancyObject *self, FancyObject** args, int argc, Scope *scope) = 0;
+    virtual FancyObject* call(FancyObject *self, FancyObject** args, int argc, Scope *scope, Interpreter* interp) = 0;
 
     /**
      * Calls the Callable (with no arguments) and returns the return
@@ -30,7 +30,7 @@ namespace fancy {
      * which the Callable is called).
      * @param scope The calling scope.
      */
-    virtual FancyObject* call(FancyObject *self, Scope *scope) = 0;
+    virtual FancyObject* call(FancyObject *self, Scope *scope, Interpreter* interp) = 0;
 
     bool is_private() const { return _private; }
     bool is_protected() const { return _protected; }

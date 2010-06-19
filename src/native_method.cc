@@ -4,14 +4,14 @@
 namespace fancy {
 
   NativeMethod::NativeMethod(string identifier,
-                             FancyObject* (&func)(FancyObject* self, FancyObject* *args, int argc, Scope *scope)) :
+                             FancyObject* (&func)(FancyObject* self, FancyObject* *args, int argc, Scope *scope, Interpreter* interp)) :
     Method(), _identifier(identifier), _func(func)
   {
   }
 
   NativeMethod::NativeMethod(string identifier,
                              string docstring,
-                             FancyObject* (&func)(FancyObject* self, FancyObject* *args, int argc, Scope *scope)) :
+                             FancyObject* (&func)(FancyObject* self, FancyObject* *args, int argc, Scope *scope, Interpreter* interp)) :
     Method(), _identifier(identifier), _func(func)
   {
     set_docstring(docstring);
@@ -46,14 +46,14 @@ namespace fancy {
     return "<NativeMethod:'" + _identifier + "' Doc:'" + _docstring + "'>";
   }
 
-  FancyObject* NativeMethod::call(FancyObject* self, FancyObject* *args, int argc, Scope *scope)
+  FancyObject* NativeMethod::call(FancyObject* self, FancyObject* *args, int argc, Scope *scope, Interpreter* interp)
   {
-    return _func(self, args, argc, scope);
+    return _func(self, args, argc, scope, interp);
   }
 
-  FancyObject* NativeMethod::call(FancyObject* self, Scope *scope)
+  FancyObject* NativeMethod::call(FancyObject* self, Scope *scope, Interpreter* interp)
   {
-    return _func(self, 0, 0, scope);
+    return _func(self, 0, 0, scope, interp);
   }
 
 }

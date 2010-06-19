@@ -15,7 +15,7 @@ namespace fancy {
         OperatorSend(Expression* receiver, Identifier* operator_name, Expression* operand);
         virtual ~OperatorSend();
 
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
         virtual EXP_TYPE type() const;
 
       private:

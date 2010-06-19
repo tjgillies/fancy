@@ -18,9 +18,9 @@ namespace fancy {
         return EXP_RETURNSTATEMENT;
       }
 
-      FancyObject* ReturnStatement::eval(Scope *scope)
+      FancyObject* ReturnStatement::eval(Scope *scope, Interpreter* interp)
       {
-        FancyObject* retval = _return_expr->eval(scope);
+        FancyObject* retval = _return_expr->eval(scope, interp);
         return retval;
       }
 

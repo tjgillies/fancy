@@ -22,7 +22,7 @@ namespace fancy {
         return EXP_METHODDEFEXPR;
       }
 
-      FancyObject* MethodDefExpr::eval(Scope *scope)
+      FancyObject* MethodDefExpr::eval(Scope *scope, Interpreter* interp)
       {
         // set method name explicitly (somehow method names aren't set
         // correctly so this is necessary)
@@ -61,7 +61,7 @@ namespace fancy {
       {
       }
 
-      FancyObject* PrivateMethodDefExpr::eval(Scope *scope)
+      FancyObject* PrivateMethodDefExpr::eval(Scope *scope, Interpreter* interp)
       {
         _method->set_name(method_name());
         scope->current_class()->def_private_method(method_name(), _method);
@@ -83,7 +83,7 @@ namespace fancy {
       {
       }
 
-      FancyObject* ProtectedMethodDefExpr::eval(Scope *scope)
+      FancyObject* ProtectedMethodDefExpr::eval(Scope *scope, Interpreter* interp)
       {
         _method->set_name(method_name());
         scope->current_class()->def_protected_method(method_name(), _method);

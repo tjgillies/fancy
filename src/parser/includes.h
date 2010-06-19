@@ -3,6 +3,7 @@
 
 #include <cstdio>
 
+#include "../interpreter.h"
 #include "nodes/identifier.h"
 #include "nodes/expression_list.h"
 #include "nodes/array_literal.h"

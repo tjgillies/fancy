@@ -16,12 +16,12 @@ namespace fancy {
       {
       }
 
-      FancyObject* HashLiteral::eval(Scope *scope)
+      FancyObject* HashLiteral::eval(Scope *scope, Interpreter* interp)
       {
         map<FancyObject*, FancyObject*> mappings;
         list< pair<Expression*, Expression*> >::iterator it;
         for(it = _key_val_list.begin(); it != _key_val_list.end(); it++) {
-          mappings[it->first->eval(scope)] = it->second->eval(scope);
+          mappings[it->first->eval(scope, interp)] = it->second->eval(scope, interp);
         }
         return new Hash(mappings);
       }

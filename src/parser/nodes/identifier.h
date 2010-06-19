@@ -30,7 +30,7 @@ namespace fancy {
         /**
          * Inherited from Expression.
          */
-        virtual FancyObject* eval(Scope *scope);
+        virtual FancyObject* eval(Scope *scope, Interpreter* interp);
         virtual EXP_TYPE type() const;
 
         /**
