@@ -120,6 +120,8 @@ namespace fancy {
      */
     FancyObject* current_sender() const { return _current_sender; }
 
+    Scope* clone() const;
+
   protected:
     map<string, FancyObject*> _value_mappings;
     Scope *_parent;

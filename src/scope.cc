@@ -140,4 +140,13 @@ namespace fancy {
   {
     return _value_mappings;
   }
+
+  Scope* Scope::clone() const
+  {
+    Scope* sc = new Scope(_current_self, _parent);
+    sc->_value_mappings = _value_mappings;
+    sc->_closed = _closed;
+    sc->_current_sender = _current_sender;
+    return sc;
+  }
 }
