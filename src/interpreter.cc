@@ -1,5 +1,7 @@
 #include "interpreter.h"
 #include "parser/parser.h"
+#include "utils.h"
+
 
 namespace fancy {
 
@@ -20,6 +22,22 @@ namespace fancy {
         _current_expr != NULL;
         _current_expr = _current_expr->next) {
       fancy::parser::last_value = _current_expr->expression->eval(_current_scope, this);
+    }
+  }
+
+  void Interpreter::set_continuation_marker(Continuation* cont)
+  {
+    _cont_node_mapping[cont] = _current_expr;
+  }
+
+  void Interpreter::activate_contination(Continuation* cont)
+  {
+    map<Continuation*, parser::nodes::expression_node*>::iterator it = _cont_node_mapping.find(cont);
+    if(it != _cont_node_mapping.end()) {
+      _current_expr = it->second;
+      _current_scope = cont->activation_scope();
+    } else {
+      error("Invalid Continuation activation: ") << cont->to_s() << std::endl;      
     }
   }
 }

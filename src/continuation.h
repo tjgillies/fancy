@@ -18,6 +18,8 @@ namespace fancy {
 
     FancyObject* run(Interpreter* interp);
 
+    Scope* activation_scope() const { return _activation_scope; }
+
   private:
     Block* _body_block;
     Scope* _activation_scope;

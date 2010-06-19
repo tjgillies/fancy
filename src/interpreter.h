@@ -3,7 +3,7 @@
 
 #include "parser/nodes/expression_list.h"
 #include "scope.h"
-
+#include "continuation.h"
 
 namespace fancy {
 
@@ -19,11 +19,16 @@ namespace fancy {
 
     void run();
 
+    void set_continuation_marker(Continuation* cont);
+
+    void activate_contination(Continuation* cont);
+
   private:
     parser::nodes::expression_node* _expressions;
     parser::nodes::expression_node* _current_expr;
     Scope* _current_scope;
     unsigned int _expr_count;
+    map<Continuation*, parser::nodes::expression_node*> _cont_node_mapping;
   };
 
 }
