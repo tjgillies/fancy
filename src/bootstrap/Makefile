@@ -2,7 +2,7 @@ cc = g++
 cc_flags = -g -Wall -ansi -pedantic
 
 files = core_classes object class block string number console array	\
-file directory scope hash exception method system
+file directory scope continuation hash exception method system
 
 src_files = $(foreach file, $(files), $(file).cc)
 obj_files = $(foreach file, $(files), $(file).o)
@@ -43,6 +43,9 @@ directory.o: directory.cc
 
 scope.o: scope.cc
 	$(cc) $(cc_flags) -c scope.cc -o scope.o
+
+continuation.o: continuation.cc
+	$(cc) $(cc_flags) -c continuation.cc -o continuation.o
 
 hash.o: hash.cc
 	$(cc) $(cc_flags) -c hash.cc -o hash.o

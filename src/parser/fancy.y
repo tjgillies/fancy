@@ -28,6 +28,8 @@
                                                   ExpressionList* body,
                                                   nodes::except_handler_list *next);
 
+  void insert_expression(nodes::expression_node* list, Expression* expr);
+
   list< pair<nodes::Identifier*, nodes::Identifier*> > method_args;
   list<nodes::Identifier*> block_args;
   list<Expression*> expression_list;
@@ -136,8 +138,14 @@
 %%
 
 programm:       /* empty */
-                | code { Expression* expr = $1; last_value = expr->eval(global_scope); }
-                | programm SEMI code { Expression* expr = $3; last_value = expr->eval(global_scope); }
+                /* | code { Expression* expr = $1; last_value = expr->eval(global_scope); } */
+                /* | programm SEMI code { Expression* expr = $3; last_value = expr->eval(global_scope); } */
+                | code {
+                  insert_expression(all_exprs, $1);
+                }
+                | programm SEMI code {
+                  insert_expression(all_exprs, $3);
+                }
                 ;
 
 code:           statement
@@ -542,4 +550,18 @@ except_handler_node(nodes::Identifier* classname, nodes::Identifier* localname, 
   node->handler = handler;
   node->next = next;
   return node;
+}
+
+void insert_expression(nodes::expression_node* list, Expression* expr)
+{
+  if(!list) {
+    list = new nodes::expression_node;
+    list->expression = expr;
+    list->next = NULL;
+  } else {
+    expression_node* n = new nodes::expression_node;
+    n->expression = expr;
+    n->next = NULL;
+    list->next = n;
+  } 
 }

@@ -286,11 +286,11 @@ namespace fancy {
           FancyObject* arg[1];
           for(int i = 0; i < val; i++) {
             arg[0] = Number::from_int(i);
-            block->call(self, arg, 1, scope);
+            block->call(self, arg, 1, scope, interp);
           }
         } else {
           for(int i = 0; i < val; i++) {
-            block->call(self, scope);
+            block->call(self, scope, interp);
           }
         }
       } else {
@@ -381,12 +381,12 @@ namespace fancy {
         if(Block* block = dynamic_cast<Block*>(args[1])) {
           for(int i = num1->intval(); i <= num2->intval(); i++) {
             FancyObject* block_arg[1] = { Number::from_int(i) };
-            block->call(self, block_arg, 1, scope);
+            block->call(self, block_arg, 1, scope, interp);
           }
         } else {
           for(int i = num1->intval(); i <= num2->intval(); i++) {
             FancyObject* block_arg[1] = { Number::from_int(i) };
-            args[1]->send_message("call:", block_arg, 1, scope, self);
+            args[1]->send_message("call:", block_arg, 1, scope, interp, self);
           }
         }
         return nil;
@@ -406,12 +406,12 @@ namespace fancy {
         if(Block* block = dynamic_cast<Block*>(args[1])) {
           for(int i = num1->intval(); i >= num2->intval(); i--) {
             FancyObject* block_arg[1] = { Number::from_int(i) };
-            block->call(self, block_arg, 1, scope);
+            block->call(self, block_arg, 1, scope, interp);
           }
         } else {
           for(int i = num1->intval(); i >= num2->intval(); i--) {
             FancyObject* block_arg[1] = { Number::from_int(i) };
-            args[1]->send_message("call:", block_arg, 1, scope, self);
+            args[1]->send_message("call:", block_arg, 1, scope, interp, self);
           }
         }
         return nil;

@@ -22,6 +22,7 @@ namespace fancy {
   extern Class* DirectoryClass;
   extern Class* ConsoleClass;
   extern Class* ScopeClass;
+  extern Class* ContinuationClass;
 
   extern Class* ExceptionClass;
   extern Class* UnknownIdentifierErrorClass;
@@ -67,6 +68,7 @@ namespace fancy {
     void init_number_class();
     void init_object_class();
     void init_scope_class();
+    void init_continuation_class();
     void init_string_class();
     void init_system_class();
   }

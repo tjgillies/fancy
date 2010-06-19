@@ -206,7 +206,7 @@ If given an Array of indices, removes all the elements with these indices.",
         int size = array->size();
         for(int i = 0; i < size; i++) {
           FancyObject* arr[1] = { array->at(i) };
-          retval = block->call(self, arr, 1, scope);
+          retval = block->call(self, arr, 1, scope, interp);
         }
         return retval;
       } else { 
@@ -224,7 +224,7 @@ If given an Array of indices, removes all the elements with these indices.",
       if(Block* block = dynamic_cast<Block*>(args[0])) {
         for(unsigned int i = 0; i < size; i++) {
           FancyObject* arr[2] = { array->at(i), Number::from_int(i) };
-          retval = block->call(self, arr, 2, scope);
+          retval = block->call(self, arr, 2, scope, interp);
         }
         return retval;
       } else {
@@ -233,7 +233,7 @@ If given an Array of indices, removes all the elements with these indices.",
           call_args_arr->insert(array->at(i));
           call_args_arr->insert(Number::from_int(i));
           FancyObject* args[1] = { call_args_arr };
-          retval = args[0]->send_message("call:", args, 1, scope, self);
+          retval = args[0]->send_message("call:", args, 1, scope, interp, self);
         }
         return retval;
       }
@@ -247,7 +247,7 @@ If given an Array of indices, removes all the elements with these indices.",
         if(array->size() == other->size()) {
           for(unsigned int i = 0; i < array->size(); i++) {
             FancyObject* cmp_arg[1] = { other->at(i) };
-            if(array->at(i)->send_message("==", cmp_arg, 1, scope, self) == nil) {
+            if(array->at(i)->send_message("==", cmp_arg, 1, scope, interp, self) == nil) {
               return nil;
             }
           }
@@ -303,7 +303,7 @@ If given an Array of indices, removes all the elements with these indices.",
           Number* idx2 = dynamic_cast<Number*>(indices_array->at(1));
           if(idx1 && idx2) {
             FancyObject* call_args[2] = { idx1, idx2 };
-            return self->send_message("from:to:", call_args, 2, scope, self);
+            return self->send_message("from:to:", call_args, 2, scope, interp, self);
           }
         }
       }
@@ -401,7 +401,7 @@ If given an Array of indices, removes all the elements with these indices.",
       FancyObject* eq_args[1] = { args[0] };
       for(unsigned int i = 0; i < array->size(); i++) {
         FancyObject* item = array->at(i);
-        if(item->send_message("==", eq_args, 1, scope, self) != nil) {
+        if(item->send_message("==", eq_args, 1, scope, interp, self) != nil) {
           indices.push_back(Number::from_int(i));
         }
       }
@@ -468,7 +468,7 @@ If given an Array of indices, removes all the elements with these indices.",
       Array* array = dynamic_cast<Array*>(self);
       for(unsigned int i = 0; i < array->size(); i++) {
         FancyObject* block_arg[1] = { array->at(i) };
-        if(args[0]->send_message("call:", block_arg, 1, scope, self) != nil) {
+        if(args[0]->send_message("call:", block_arg, 1, scope, interp, self) != nil) {
           return t;
         }
       }
@@ -481,7 +481,7 @@ If given an Array of indices, removes all the elements with these indices.",
       Array* array = dynamic_cast<Array*>(self);
       for(unsigned int i = 0; i < array->size(); i++) {
         FancyObject* block_arg[1] = { array->at(i) };
-        if(args[0]->send_message("call:", block_arg, 1, scope, self) == nil) {
+        if(args[0]->send_message("call:", block_arg, 1, scope, interp, self) == nil) {
           return nil;
         }
       }
@@ -497,7 +497,7 @@ If given an Array of indices, removes all the elements with these indices.",
         for(unsigned int i = 0; i < array->size(); i++) {
           FancyObject* obj = array->at(i);
           FancyObject* block_arg[1] = { obj };
-          if(block->call(self, block_arg, 1, scope) != nil) {
+          if(block->call(self, block_arg, 1, scope, interp) != nil) {
             ret_array->insert(obj);
           }
         }
@@ -505,7 +505,7 @@ If given an Array of indices, removes all the elements with these indices.",
         for(unsigned int i = 0; i < array->size(); i++) {
           FancyObject* obj = array->at(i);
           FancyObject* block_arg[1] = { obj };
-          if(args[0]->send_message("call:", block_arg, 1, scope, self) != nil) {
+          if(args[0]->send_message("call:", block_arg, 1, scope, interp, self) != nil) {
             ret_array->insert(obj);
           }
         }
@@ -526,7 +526,7 @@ If given an Array of indices, removes all the elements with these indices.",
           arr->insert(obj);
           arr->insert(idx);
           FancyObject* block_arg[2] = { obj, idx };
-          if(block->call(self, block_arg, 2, scope) != nil) {
+          if(block->call(self, block_arg, 2, scope, interp) != nil) {
             ret_array->insert(arr);
           }
         }
@@ -538,7 +538,7 @@ If given an Array of indices, removes all the elements with these indices.",
           arr->insert(obj);
           arr->insert(idx);
           FancyObject* block_arg[1] = { arr };
-          if(args[0]->send_message("call:", block_arg, 1, scope, self) != nil) {
+          if(args[0]->send_message("call:", block_arg, 1, scope, interp, self) != nil) {
             ret_array->insert(arr);
           }
         }

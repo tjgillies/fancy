@@ -25,6 +25,7 @@ namespace fancy {
   Class* DirectoryClass;
   Class* ConsoleClass;
   Class* ScopeClass;
+  Class* ContinuationClass;
 
   Class* ExceptionClass;
   Class* UnknownIdentifierErrorClass;
@@ -68,6 +69,7 @@ namespace fancy {
       DirectoryClass = new Class("Directory", ObjectClass);
       ConsoleClass = new Class("Console", ObjectClass);
       ScopeClass = new Class("Scope", ObjectClass);
+      ContinuationClass = new Class("Continuation", ObjectClass);
 
       ExceptionClass = new Class("Exception", ObjectClass);
       UnknownIdentifierErrorClass = new Class("UnknownIdentifierError", ExceptionClass);
@@ -87,6 +89,7 @@ namespace fancy {
       init_file_class();
       init_directory_class();
       init_scope_class();
+      init_continuation_class();
       init_hash_class();
       init_exception_classes();
       init_method_class();
@@ -124,6 +127,7 @@ namespace fancy {
       global_scope->define("Directory", DirectoryClass);
       global_scope->define("Console", ConsoleClass);
       global_scope->define("Scope", ScopeClass);
+      global_scope->define("Continuation", ContinuationClass);
 
       global_scope->define("Exception", ExceptionClass);
       global_scope->define("UnknownIdentifierError", UnknownIdentifierErrorClass);

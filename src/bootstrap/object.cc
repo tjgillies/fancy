@@ -4,7 +4,7 @@
 #include "../block.h"
 #include "../string.h"
 #include "../number.h"
-
+#include "../continuation.h"
 
 namespace fancy {
   namespace bootstrap {
@@ -128,6 +128,12 @@ and passing them on to the initialize: method of the class.",
                  "memaddr",
                  "Returns the raw memory pointer adress as a Number",
                  memaddr);
+
+
+      DEF_METHOD(ObjectClass,
+                 "callcc:",
+                 "Creates a continuation with a given Block.",
+                 callcc);
     }
 
     /**
@@ -147,7 +153,7 @@ and passing them on to the initialize: method of the class.",
           Class* the_class = dynamic_cast<Class*>(self);
           FancyObject* new_instance = the_class->create_instance();
           if(new_instance->responds_to("initialize")) {
-            new_instance->send_message("initialize", args, argc, scope, self);
+            new_instance->send_message("initialize", args, argc, scope, interp, self);
           }
           return new_instance;
         }
@@ -173,7 +179,7 @@ and passing them on to the initialize: method of the class.",
           Class* the_class = dynamic_cast<Class*>(self);
           FancyObject* new_instance = the_class->create_instance();
           if(new_instance->responds_to("initialize:")) {
-            new_instance->send_message("initialize:", args, argc, scope, self);
+            new_instance->send_message("initialize:", args, argc, scope, interp, self);
           }
           return new_instance;
         }
@@ -273,7 +279,7 @@ and passing them on to the initialize: method of the class.",
     {
       EXPECT_ARGS("Object#send:", 1);
       string method_name = args[0]->to_s();
-      return self->send_message(method_name, 0, 0, scope, self);
+      return self->send_message(method_name, 0, 0, scope, interp, self);
     }
 
     METHOD(ObjectClass, send__params)
@@ -286,7 +292,7 @@ and passing them on to the initialize: method of the class.",
         for(int i = 0; i < size; i++) {
           arg_array[i] = arr->at(i);
         }
-        FancyObject* retval = self->send_message(method_name, arg_array, size, scope, self);
+        FancyObject* retval = self->send_message(method_name, arg_array, size, scope, interp, self);
         delete[] arg_array; // cleanup
         return retval;
       } else {
@@ -354,6 +360,18 @@ and passing them on to the initialize: method of the class.",
     METHOD(ObjectClass, memaddr)
     {
       return Number::from_int((long)self);
+    }
+
+    METHOD(ObjectClass, callcc)
+    {
+      EXPECT_ARGS("Object#callcc:", 1);
+      if(Block* block = dynamic_cast<Block*>(args[0])) {
+        Continuation* cont = new Continuation(block, scope);
+        return cont->run(interp);
+      } else {
+        errorln("Object#callcc: expects a Block argument.");
+        return nil;
+      }
     }
 
   }
