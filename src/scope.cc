@@ -13,8 +13,17 @@ namespace fancy {
   /*****************************************
    *****************************************/
 
+  Scope::Scope() :
+    _parent(NULL),
+    _current_self(nil),
+    _current_class(NilClass),
+    _closed(false),
+    _current_sender(nil)
+  {
+  }
+
   Scope::Scope(FancyObject* current_self) :
-    _parent(0),
+    _parent(NULL),
     _closed(false),
     _current_sender(nil)
   {
@@ -65,6 +74,10 @@ namespace fancy {
       } else {
         return _current_self->get_slot(identifier);
       }
+    }
+
+    if(identifier == "self") {
+      return _current_self;
     }
 
     if(identifier == "__sender__") {
@@ -122,7 +135,6 @@ namespace fancy {
   {
     _current_self = current_self;
     _current_class = current_self->get_class();
-    define("self", current_self);
   }
 
   void Scope::set_current_class(Class* klass)

@@ -25,13 +25,13 @@ FancySpec describe: Object with: |it| {
   };
 
   it should: "call unkown_message:with_params: when calling an undefined method" when: {
-    def class UnkownMessage {
+    def class UnknownMessage {
       def unknown_message: message with_params: params {
         "Got: " ++ message ++ " " ++ params
       }
     };
 
-    obj = UnkownMessage new;
+    obj = UnknownMessage new;
     obj this_is_not_defined: "It's true!" . should_equal: "Got: this_is_not_defined: It's true!"
   };
 
@@ -73,5 +73,23 @@ FancySpec describe: Object with: |it| {
     1123 is_a?: Object . should_equal: true;
     132.123 is_a?: Number . should_equal: true;
     132.123 is_a?: Object . should_equal: true    
+  };
+
+  it should: "correctly assign multiple values at once" when: {
+    x, y, z = 1, 10, 100;
+    x should_equal: 1;
+    y should_equal: 10;
+    z should_equal: 100;
+
+    x, y, z = :foo, :bar;
+    x should_equal: :foo;
+    y should_equal: :bar;
+    z should_equal: nil;
+
+    x = :foo;
+    y = :bar;
+    x, y = y, x;
+    x should_equal: :bar;
+    y should_equal: :foo
   }
 }
