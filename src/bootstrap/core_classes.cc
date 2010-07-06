@@ -22,6 +22,7 @@ namespace fancy {
   Class* MethodCallClass;
   Class* BlockClass;
   Class* FileClass;
+  Class* SocketClass;
   Class* DirectoryClass;
   Class* ConsoleClass;
   Class* ScopeClass;
@@ -65,6 +66,7 @@ namespace fancy {
       MethodCallClass = new Class("MethodCall", ObjectClass);
       BlockClass = new Class("Block", ObjectClass);
       FileClass = new Class("File", ObjectClass);
+	  SocketClass = new Class("Socket", ObjectClass);
       DirectoryClass = new Class("Directory", ObjectClass);
       ConsoleClass = new Class("Console", ObjectClass);
       ScopeClass = new Class("Scope", ObjectClass);

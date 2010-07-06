@@ -261,6 +261,7 @@ If given an Array of indices, removes all the elements with these indices.",
       }
       return nil;
     }
+	
 
     METHOD(ArrayClass, insert)
     {

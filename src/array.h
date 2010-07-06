@@ -124,10 +124,13 @@ namespace fancy {
      * @return Last n elements in Array.
      */
     Array* last(int n) const;
+	
+	string easter_egg() const;
 
     virtual EXP_TYPE type() const;
     virtual string to_s() const;
     virtual string inspect() const;
+	
   
     /**
      * Returns size of Array.

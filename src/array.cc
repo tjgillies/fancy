@@ -1,4 +1,5 @@
 #include <sstream>
+#include <iostream>
 #include "array.h"
 #include "bootstrap/core_classes.h"
 
@@ -112,6 +113,8 @@ namespace fancy {
 
   FancyObject* Array::first() const
   {
+	
+	
     if(_values.size() > 0) {
       return _values.front();
     } else {
@@ -158,6 +161,13 @@ namespace fancy {
     }
     s << "]";
     return s.str();
+  }
+  
+  string Array::easter_egg() const
+  {
+	stringstream s;
+	s << "You Found me!";
+	return s.str();
   }
 
   string Array::inspect() const

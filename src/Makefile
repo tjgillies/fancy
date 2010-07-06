@@ -13,7 +13,7 @@ console array file directory scope hash exception method system
 
 files = fancy_object true nil hash array symbol number string		\
 native_method scope lexical_scope class errors method regexp block	\
-utils file directory fancy_exception
+utils file directory fancy_exception socket
 
 src_files = $(foreach file, $(files), $(file).cc) 			\
 $(foreach file, $(bootstrap_files), bootstrap/$(file).cc) 		\
@@ -93,6 +93,9 @@ utils.o: utils.cc
 
 file.o: file.cc
 	$(cc) $(cc_flags) -c file.cc -o file.o
+	
+socket.o: socket.cc
+	$(cc) $(cc_flags)  socket.cc PracticalSocket.cpp -o socket.o
 
 fancy_exception.o: fancy_exception.cc
 	$(cc) $(cc_flags) -c fancy_exception.cc -o fancy_exception.o
